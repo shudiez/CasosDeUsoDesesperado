@@ -1,4 +1,4 @@
-package com.desi.inmobiliaria.entity;
+package com.desi.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,4 +1,4 @@
-package com.desi.inmobiliaria.entity;
+package com.desi.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -48,5 +48,6 @@ public class Ciudad {
 	public void setProvincia(Provincia provincia) {
 		this.provincia = provincia;
 	}
-
+	
+	
 }
