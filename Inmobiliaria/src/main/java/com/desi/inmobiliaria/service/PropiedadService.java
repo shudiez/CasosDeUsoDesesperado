@@ -6,9 +6,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.desi.inmobiliaria.entity.EstadoContrato;
 import com.desi.inmobiliaria.entity.EstadoDisponibilidad;
 import com.desi.inmobiliaria.entity.HistorialEstadoPropiedad;
 import com.desi.inmobiliaria.entity.Propiedad;
+import com.desi.inmobiliaria.repository.ContratoRepository;
 import com.desi.inmobiliaria.repository.HistorialEstadoPropiedadRepository;
 import com.desi.inmobiliaria.repository.PropiedadRepository;
 
@@ -23,6 +25,9 @@ public class PropiedadService {
 	// Permite guardar el historial de cambios de estado
 	@Autowired
 	private HistorialEstadoPropiedadRepository historialEstadoPropiedadRepository;
+
+	@Autowired
+	private ContratoRepository contratoRepository;
 
 	// GUARDAR PROPIEDAD EN LA BD realizando las validaciones necesarias
 	public Propiedad guardar(Propiedad propiedad) {
@@ -60,6 +65,15 @@ public class PropiedadService {
 
 			throw new RuntimeException("Ya existe una propiedad con esa dirección y ciudad");
 		}
+
+		if (propiedad.getId() != null
+				&& (propiedad.getEstadoDisponibilidad() == EstadoDisponibilidad.DISPONIBLE
+						|| propiedad.getEstadoDisponibilidad() == EstadoDisponibilidad.INACTIVA)
+				&& contratoRepository.existsByPropiedadAndEstadoAndEliminadoFalse(propiedad, EstadoContrato.ACTIVO)) {
+
+			throw new RuntimeException("No se puede cambiar el estado porque existe un contrato activo");
+		}
+
 		// Guarda la propiedad en la base de datos
 		Propiedad propiedadGuardada = propiedadRepository.save(propiedad);
 
@@ -90,6 +104,11 @@ public class PropiedadService {
 	public void eliminar(Long id) {
 
 		Propiedad propiedad = buscarPorId(id);
+
+		if (contratoRepository.existsByPropiedadAndEstadoAndEliminadoFalse(propiedad, EstadoContrato.ACTIVO)) {
+
+			throw new RuntimeException("No se puede eliminar la propiedad porque tiene un contrato activo vigente");
+		}
 
 		propiedad.setEliminada(true);
 
