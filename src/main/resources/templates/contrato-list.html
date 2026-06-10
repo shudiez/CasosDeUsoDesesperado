@@ -27,7 +27,7 @@
             <tr th:each="c : ${contratos}">
                 <td th:text="${c.id}"></td>
                 <td th:text="${c.propiedad != null ? c.propiedad.id : 'No asignada'}"></td>
-                <td th:text="${c.monto}"></td>
+                <td th:text="${c.importeMensual}"></td>
                 <td th:text="${c.fechaInicio}"></td>
                 <td>
                     <a th:href="@{/contrato/editar/{id}(id=${c.id})}" class="btn btn-warning btn-sm">Editar</a>

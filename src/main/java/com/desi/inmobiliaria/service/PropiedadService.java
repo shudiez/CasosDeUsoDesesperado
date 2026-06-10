@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.desi.inmobiliaria.entity.Propiedad;
-import com.desi.inmobiliaria.repository.PropiedadRepository;
+import com.desi.entity.Propiedad;
+import com.desi.repository.PropiedadRepository;
 
 @Service
 public class PropiedadService {

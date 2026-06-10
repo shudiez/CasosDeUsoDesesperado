@@ -1,4 +1,4 @@
-package com.desi.entity;
+package com.desi.inmobiliaria.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

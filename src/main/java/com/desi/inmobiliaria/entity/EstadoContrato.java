@@ -1,4 +1,4 @@
-package com.desi.entity;
+package com.desi.inmobiliaria.entity;
 
 public enum EstadoContrato {
 

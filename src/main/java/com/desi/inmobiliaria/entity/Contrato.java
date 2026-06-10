@@ -1,5 +1,5 @@
 
-package com.desi.entity;
+package com.desi.inmobiliaria.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
