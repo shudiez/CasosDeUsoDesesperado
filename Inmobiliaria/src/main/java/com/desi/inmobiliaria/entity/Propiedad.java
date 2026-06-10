@@ -9,10 +9,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 @Entity
+//Guarda toda la información de una propiedad
 public class Propiedad {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	// ID generado automáticamente por la base de datos
 	private Long id;
 
 	private String direccion;
@@ -20,20 +22,27 @@ public class Propiedad {
 	private Double metrosCuadrados;
 	private String descripcion;
 	private String comodidades;
+
+	// Permite ocultar una propiedad sin eliminarla de la base de datos
 	private boolean eliminada;
 
+	// Persona dueña de la propiedad
 	@ManyToOne
 	private Persona propietario;
 
+	// Ciudad donde está ubicada la propiedad
 	@ManyToOne
 	private Ciudad ciudad;
 
+	// Tipo de inmueble
 	@Enumerated(EnumType.STRING)
 	private TipoPropiedad tipo;
 
+	// Estado en el que se encuentra la propiedad
 	@Enumerated(EnumType.STRING)
 	private EstadoDisponibilidad estadoDisponibilidad;
 
+	// Constructor vacío
 	public Propiedad() {
 	}
 

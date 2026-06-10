@@ -6,12 +6,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
+//Guarda los datos de las personas registradas en el sistema
 public class Persona {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	// Identificador único de la persona
 	private Long id;
 
+	// Datos personales y de contacto
 	private String nombre;
 	private String apellido;
 	private String dniCuit;

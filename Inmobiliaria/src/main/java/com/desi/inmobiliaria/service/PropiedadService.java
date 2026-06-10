@@ -13,15 +13,18 @@ import com.desi.inmobiliaria.repository.HistorialEstadoPropiedadRepository;
 import com.desi.inmobiliaria.repository.PropiedadRepository;
 
 @Service
+//Acá se manejan las reglas de negocio de las propiedades
 public class PropiedadService {
 
+	// Permite acceder a los datos de las propiedades
 	@Autowired
 	private PropiedadRepository propiedadRepository;
 
+	// Permite guardar el historial de cambios de estado
 	@Autowired
 	private HistorialEstadoPropiedadRepository historialEstadoPropiedadRepository;
 
-	// GUARDAR PROPIEDAD EN LA BD
+	// GUARDAR PROPIEDAD EN LA BD realizando las validaciones necesarias
 	public Propiedad guardar(Propiedad propiedad) {
 
 		// Verifico si la direccion esta cargada o vacia
@@ -44,22 +47,23 @@ public class PropiedadService {
 			throw new RuntimeException("Los metros cuadrados deben ser mayores a cero");
 		}
 
-		// verifico si es estado de la propiedad es disponible
+		// Si no se indicó un estado, se asigna Disponible por defecto
 		if (propiedad.getEstadoDisponibilidad() == null) {
 			propiedad.setEstadoDisponibilidad(EstadoDisponibilidad.DISPONIBLE);
 		}
 
-		// Verifico si ya existe la misma direccion y ciudad
-		if (propiedad.getId() == null
-				&& propiedadRepository.existsByDireccionAndCiudad(propiedad.getDireccion(), propiedad.getCiudad())) {
+		// Verifico que no exista otra propiedad con la misma dirección y ciudad
+		Propiedad propiedadExistente = propiedadRepository.findByDireccionAndCiudad(propiedad.getDireccion(),
+				propiedad.getCiudad());
+
+		if (propiedadExistente != null && !propiedadExistente.getId().equals(propiedad.getId())) {
 
 			throw new RuntimeException("Ya existe una propiedad con esa dirección y ciudad");
 		}
-
-		// si esta todo ok, lo guarda y lo carga
-		//guarda registro de fechas de cada cambio de estado de la propiedad.
+		// Guarda la propiedad en la base de datos
 		Propiedad propiedadGuardada = propiedadRepository.save(propiedad);
 
+		// Guarda un registro en el historial con el estado actual de la propiedad
 		HistorialEstadoPropiedad historial = new HistorialEstadoPropiedad();
 		historial.setPropiedad(propiedadGuardada);
 		historial.setEstado(propiedadGuardada.getEstadoDisponibilidad());
@@ -71,17 +75,24 @@ public class PropiedadService {
 	}
 
 	// LISTAR PROPIEDADES
+	// Devuelve solamente las propiedades que no fueron eliminadas
 	public List<Propiedad> listarTodas() {
-		return propiedadRepository.findAll();
+		return propiedadRepository.findByEliminadaFalse();
 	}
 
 	// EDITAR PROPIEDAD
+	// Busca una propiedad por su ID para mostrarla o editarla
 	public Propiedad buscarPorId(Long id) {
 		return propiedadRepository.findById(id).orElse(null);
 	}
 
 	// ELIMINAR PROPIEDAD
 	public void eliminar(Long id) {
-		propiedadRepository.deleteById(id);
+
+		Propiedad propiedad = buscarPorId(id);
+
+		propiedad.setEliminada(true);
+
+		propiedadRepository.save(propiedad);
 	}
 }

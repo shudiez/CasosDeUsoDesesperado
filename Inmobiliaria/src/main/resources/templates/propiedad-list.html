@@ -18,21 +18,29 @@
 		<tr>
 			<th>ID</th>
 			<th>Dirección</th>
+			<th>Ciudad</th>
+			<th>Tipo de propiedad</th>
+			<th>Cantidad de Ambientes</th>
+			<th>Metros Cuadrados</th>
+			<th>Estado de disponibilidad</th>
+			<th>Propietario</th>
 			<th>Descripción</th>
-			<th>Ambientes</th>
-			<th>Metros²</th>
-			<th>Estado</th>
 			<th>Acciones</th>
+
+
 		</tr>
 
 		<!-- RECORRIDO DE PROPIEDADES -->
 		<tr th:each="propiedad : ${propiedades}">
 			<td th:text="${propiedad.id}"></td>
 			<td th:text="${propiedad.direccion}"></td>
-			<td th:text="${propiedad.descripcion}"></td>
+			<td th:text="${propiedad.ciudad.nombre}"></td>
+			<td th:text="${propiedad.tipo}"></td>
 			<td th:text="${propiedad.cantidadAmbientes}"></td>
 			<td th:text="${propiedad.metrosCuadrados}"></td>
 			<td th:text="${propiedad.estadoDisponibilidad}"></td>
+			<td th:text="${propiedad.propietario.nombre + ' ' + propiedad.propietario.apellido}"></td>
+			<td th:text="${propiedad.descripcion}"></td>
 
 			<!-- EDITAR -->
 			<td>

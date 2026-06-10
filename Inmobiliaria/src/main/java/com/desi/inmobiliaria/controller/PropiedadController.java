@@ -27,9 +27,11 @@ public class PropiedadController {
 	private PersonaService personaService;
 
 	// ALTA PROPIEDAD
+	// Abre el formulario para cargar una nueva propiedad
 	@GetMapping("/propiedad/nueva")
 	public String nuevaPropiedad(Model model) {
 
+		// Cargo las listas que necesita el formulario para mostrar opciones
 		model.addAttribute("propiedad", new Propiedad());
 		model.addAttribute("tipos", TipoPropiedad.values());
 		model.addAttribute("estados", EstadoDisponibilidad.values());
@@ -40,11 +42,13 @@ public class PropiedadController {
 	}
 
 	// EDITAR PROPIEDAD
+	// Busca una propiedad por ID y carga sus datos para poder modificarla
 	@GetMapping("/propiedad/editar/{id}")
 	public String editarPropiedad(@PathVariable Long id, Model model) {
 
 		Propiedad propiedad = propiedadService.buscarPorId(id);
 
+		// Envío a la vista la propiedad y las listas necesarias para el formulario
 		model.addAttribute("propiedad", propiedad);
 		model.addAttribute("tipos", TipoPropiedad.values());
 		model.addAttribute("estados", EstadoDisponibilidad.values());
@@ -55,6 +59,7 @@ public class PropiedadController {
 	}
 
 	// GUARDAR PROPIEDAD
+	// Guarda una nueva propiedad o actualiza una existente
 	@PostMapping("/propiedades")
 	public String guardar(Propiedad propiedad) {
 
@@ -64,6 +69,7 @@ public class PropiedadController {
 	}
 
 	// LISTAR PROPIEDADES
+	// Muestra todas las propiedades registradas
 	@GetMapping("/propiedades")
 	public String listar(Model model) {
 
@@ -73,6 +79,7 @@ public class PropiedadController {
 	}
 
 	// ELIMINAR PROPIEDAD
+	// Elimina una propiedad según su ID
 	@GetMapping("/propiedad/eliminar/{id}")
 	public String eliminar(@PathVariable Long id) {
 
