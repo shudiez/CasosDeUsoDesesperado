@@ -14,6 +14,52 @@
 
 	<br><br>
 
+	<h3>Filtrar propiedades</h3>
+
+	<form th:action="@{/propiedades/buscar}" method="get">
+
+		<label>Dirección:</label>
+		<input type="text" name="direccion">
+
+		<br><br>
+
+		<label>Ciudad:</label>
+		<select name="ciudadId">
+			<option value="">Todas</option>
+			<option th:each="ciudad : ${ciudades}" th:value="${ciudad.id}" th:text="${ciudad.nombre}">
+			</option>
+		</select>
+
+		<br><br>
+
+		<label>Tipo:</label>
+		<select name="tipo">
+			<option value="">Todos</option>
+			<option th:each="tipo : ${tipos}" th:value="${tipo}" th:text="${tipo}">
+			</option>
+		</select>
+
+		<br><br>
+
+		<label>Estado:</label>
+		<select name="estado">
+			<option value="">Todos</option>
+			<option th:each="estado : ${estados}" th:value="${estado}" th:text="${estado}">
+			</option>
+		</select>
+
+		<br><br>
+
+		<button type="submit">Buscar</button>
+
+		<a href="/propiedades">Limpiar filtros</a>
+
+	</form>
+
+	<br><br>
+
+	<br><br>
+
 	<table border="1">
 		<tr>
 			<th>ID</th>
@@ -34,7 +80,7 @@
 		<tr th:each="propiedad : ${propiedades}">
 			<td th:text="${propiedad.id}"></td>
 			<td th:text="${propiedad.direccion}"></td>
-			<td th:text="${propiedad.ciudad.nombre}"></td>
+			<td th:text="${propiedad.ciudad != null ? propiedad.ciudad.nombre : 'Sin ciudad'}"></td>
 			<td th:text="${propiedad.tipo}"></td>
 			<td th:text="${propiedad.cantidadAmbientes}"></td>
 			<td th:text="${propiedad.metrosCuadrados}"></td>

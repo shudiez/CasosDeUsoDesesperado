@@ -10,6 +10,7 @@ import com.desi.inmobiliaria.entity.EstadoContrato;
 import com.desi.inmobiliaria.entity.EstadoDisponibilidad;
 import com.desi.inmobiliaria.entity.HistorialEstadoPropiedad;
 import com.desi.inmobiliaria.entity.Propiedad;
+import com.desi.inmobiliaria.entity.TipoPropiedad;
 import com.desi.inmobiliaria.repository.ContratoRepository;
 import com.desi.inmobiliaria.repository.HistorialEstadoPropiedadRepository;
 import com.desi.inmobiliaria.repository.PropiedadRepository;
@@ -113,5 +114,27 @@ public class PropiedadService {
 		propiedad.setEliminada(true);
 
 		propiedadRepository.save(propiedad);
+	}
+	
+	public List<Propiedad> buscarPorDireccion(String direccion) {
+		return propiedadRepository
+				.findByDireccionContainingIgnoreCaseAndEliminadaFalse(direccion);
+	}
+
+	public List<Propiedad> buscarPorCiudad(Long ciudadId) {
+		return propiedadRepository
+				.findByCiudadIdAndEliminadaFalse(ciudadId);
+	}
+
+	public List<Propiedad> buscarPorTipo(TipoPropiedad tipo) {
+		return propiedadRepository
+				.findByTipoAndEliminadaFalse(tipo);
+	}
+
+	public List<Propiedad> buscarPorEstado(
+			EstadoDisponibilidad estado) {
+
+		return propiedadRepository
+				.findByEstadoDisponibilidadAndEliminadaFalse(estado);
 	}
 }

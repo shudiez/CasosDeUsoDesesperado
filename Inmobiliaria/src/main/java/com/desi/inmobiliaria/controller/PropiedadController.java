@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.desi.inmobiliaria.entity.EstadoDisponibilidad;
 import com.desi.inmobiliaria.entity.Propiedad;
@@ -74,6 +75,38 @@ public class PropiedadController {
 	public String listar(Model model) {
 
 		model.addAttribute("propiedades", propiedadService.listarTodas());
+		model.addAttribute("ciudades", ciudadService.listarTodas());
+		model.addAttribute("tipos", TipoPropiedad.values());
+		model.addAttribute("estados", EstadoDisponibilidad.values());
+
+		return "propiedad-list";
+	}
+
+	// BUSCAR / FILTRAR PROPIEDADES
+	@GetMapping("/propiedades/buscar")
+	public String buscar(@RequestParam(required = false) String direccion,
+			@RequestParam(required = false) Long ciudadId, @RequestParam(required = false) TipoPropiedad tipo,
+			@RequestParam(required = false) EstadoDisponibilidad estado, Model model) {
+
+		if (direccion != null && !direccion.isBlank()) {
+			model.addAttribute("propiedades", propiedadService.buscarPorDireccion(direccion));
+
+		} else if (ciudadId != null) {
+			model.addAttribute("propiedades", propiedadService.buscarPorCiudad(ciudadId));
+
+		} else if (tipo != null) {
+			model.addAttribute("propiedades", propiedadService.buscarPorTipo(tipo));
+
+		} else if (estado != null) {
+			model.addAttribute("propiedades", propiedadService.buscarPorEstado(estado));
+
+		} else {
+			model.addAttribute("propiedades", propiedadService.listarTodas());
+		}
+
+		model.addAttribute("ciudades", ciudadService.listarTodas());
+		model.addAttribute("tipos", TipoPropiedad.values());
+		model.addAttribute("estados", EstadoDisponibilidad.values());
 
 		return "propiedad-list";
 	}
