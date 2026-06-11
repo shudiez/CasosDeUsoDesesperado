@@ -1,4 +1,4 @@
-package com.desi.inmobiliaria.service;
+package com.desi.inmobiliria.service;
 
 import java.util.List;
 

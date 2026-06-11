@@ -1,4 +1,4 @@
-package com.desi.inmobiliaria.service;
+package com.desi.inmobiliria.service;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import com.desi.entity.Persona;
 
 public interface PersonaService {
 
-List<Persona> listarTodas();
+	List<Persona> listarTodas();
     
     void guardar(Persona persona);
     

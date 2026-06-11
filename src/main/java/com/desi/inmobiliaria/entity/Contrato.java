@@ -1,10 +1,15 @@
 
 package com.desi.inmobiliaria.entity;
 
+package com.desi.entity;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +20,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 
 @Entity
@@ -26,17 +35,26 @@ public class Contrato {
 	private Long id;
 	
 	@ManyToOne(optional = false)
+	@NotNull(message="La propiedad es obligatoria")
 	private Propiedad propiedad;
 	
 	@ManyToOne(optional = false)
+	@NotNull(message = "El inquilino es obligatorio")
 	private Persona inquilino;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@NotNull(message = "La fecha de inicio es obligatoria")
 	private LocalDate fechaInicio;
 	
+	@NotNull(message = "La duración es obligatoria")
+    @Positive(message = "La duración debe ser mayor a 0 meses")
 	private Integer duracionMeses;
-	
+	@NotNull(message = "El importe es obligatorio")
+    @Positive(message = "El importe debe ser un número positivo") // <-- Evita negativos y cero
 	private BigDecimal importeMensual;
-	
+	@NotNull(message = "El día de vencimiento es obligatorio")
+    @Min(value = 1, message = "El día mínimo es 1")
+    @Max(value = 31, message = "El día máximo es 31")
 	private Integer diaVencimientoMensual;
 	
 	@Column(length = 2000)
@@ -62,6 +80,7 @@ public class Contrato {
 	
 	// --- Getters y Setters ---
     public Long getId() { return id; }
+    public void setId(Long  id) { this.id = id; }
 
     public Propiedad getPropiedad() { return propiedad; }
     public void setPropiedad(Propiedad propiedad) { this.propiedad = propiedad; }
@@ -93,5 +112,3 @@ public class Contrato {
     public List<HistorialEstadoContrato> getHistorialEstados() { return historialEstados; }
 }
 	
-	
-

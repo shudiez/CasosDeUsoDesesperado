@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://wwww.thymelead.com">
+<html xmlns:th="http://wwww.thymeleaf.com">
 	
 <head>
     <meta charset="UTF-8">
@@ -13,6 +13,23 @@
 	<form th:action="@{/contratos}" th:object="${contrato}" method="post" class="card p-4 shadow-sm">
 	    <input type="hidden" th:field="*{id}" />
 
+				<!-- -->
+		<div class="row mb-3">
+		        <div class="col-12" th:if="${contrato.id != null}">
+		            <label class="form-label fw-bold text-muted">Identificador del Contrato:</label>
+		            
+		            <input th:if="${contrato.id != null}" 
+		                   type="text" 
+		                   class="form-control bg-light fw-bold text-secondary" 
+		                   th:value="'CONTRATO Nº ' + ${contrato.id}" 
+		                   disabled />
+		                   
+		            
+	 				<hr class="mb-4 text-muted"> 		    
+		        </div>
+		    </div>
+		    
+		
 	    <div class="row">
 	        <div class="col-md-6 mb-3">
 	            <label class="form-label">Propiedad:</label>

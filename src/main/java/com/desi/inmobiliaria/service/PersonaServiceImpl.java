@@ -1,4 +1,4 @@
-package com.desi.service;
+package com.desi.inmobiliria.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;

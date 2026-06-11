@@ -1,15 +1,17 @@
-package com.desi.inmobiliaria.service;
+package com.desi.inmobiliria.service;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.desi.entity.Contrato;
+import com.desi.entity.EstadoContrato;
 
 
 public interface ContratoService {
 
 	
-	List<Contrato> listarTodos();
+	List<Contrato> listarConFiltros(String propiedad, String inquilino, EstadoContrato estado,LocalDate fechaInicio);
     
     void guardar(Contrato contrato);
     
