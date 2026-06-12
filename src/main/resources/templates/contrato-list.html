@@ -44,6 +44,8 @@
                
                 <th>Inquilino</th>
                 <th>Fecha Inicio</th>
+				<th>Duracion contrato</th>
+				
                 <th>Importe Mensual</th>
                 <th>Vencimiento</th>
                 <th>Estado</th>
@@ -59,12 +61,13 @@
 				<td class="text-center fw-bold" th:text="${c.id}"></td>
 				                
 				<td th:text="${c.propiedad != null ? c.propiedad.direccion : 'No asignada'}"></td>
-				                
-				                
+				                				                
 				<td th:text="${c.inquilino != null ? (c.inquilino.apellido + ', ' + c.inquilino.nombre) : 'No asignado'}"></td>
 				                
 				<td class="text-center" th:text="${c.fechaInicio != null ? #temporals.format(c.fechaInicio, 'dd/MM/yyyy') : '-'}"></td>
-				                
+						                
+				<td class="text-center" th:text="${c.duracionMeses != null} ? 'Meses ' + ${c.duracionMeses} : '-'"></td>
+				
 				<td class="text-end fw-bold text-success" th:text="${c.importeMensual != null ? '$ ' + #numbers.formatDecimal(c.importeMensual, 1, 'POINT', 2, 'COMMA') : '$ 0,00'}"></td>
 				                
 				<td class="text-center" th:text="${c.diaVencimientoMensual != null ? 'Día ' + c.diaVencimientoMensual : '-'}"></td>

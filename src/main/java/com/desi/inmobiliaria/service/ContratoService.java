@@ -18,6 +18,7 @@ public interface ContratoService {
     Contrato buscarPorId(Long id);
     
     void eliminar(Long id);
-	
+    
+    void cambiarEstado(Long contratoId, EstadoContrato nuevoEstado);
 	
 }

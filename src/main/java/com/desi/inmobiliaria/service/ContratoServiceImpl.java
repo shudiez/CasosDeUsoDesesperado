@@ -12,18 +12,18 @@ import com.desi.entity.HistorialEstadoContrato;
 import com.desi.entity.Propiedad;
 import com.desi.repository.ContratoRepository;
 import com.desi.repository.PropiedadRepository;
-import com.desi.repository.HistorialEstadoRepository;
+import com.desi.repository.HistorialEstadoContratoRepository;
 
 @Service
 public class ContratoServiceImpl implements ContratoService{
 
 	// Dependencia del repositorio (Base de datos)
     private final ContratoRepository contratoRepository;
-    private final PropiedadRepository propiedadRepository; /*  AGREGADO	*/
-    private final HistorialEstadoRepository historialEstadoRepository;
+    private final PropiedadRepository propiedadRepository;
+    private final HistorialEstadoContratoRepository historialEstadoRepository;
 
     // Inyección por constructor
-    public ContratoServiceImpl(ContratoRepository contratoRepository, PropiedadRepository propiedadRepository, HistorialEstadoRepository historialEstadoRepository) {
+    public ContratoServiceImpl(ContratoRepository contratoRepository, PropiedadRepository propiedadRepository, HistorialEstadoContratoRepository historialEstadoRepository) {
         this.contratoRepository = contratoRepository;
         this.propiedadRepository = propiedadRepository;
         this.historialEstadoRepository= historialEstadoRepository;
@@ -163,5 +163,49 @@ public class ContratoServiceImpl implements ContratoService{
         // .deleteById() elimina el registro de la base de datos
         contratoRepository.deleteById(id);
     }
-	
+    
+    
+    // controlar cambios de estado en los contratos
+    
+    @Override
+    public void cambiarEstado(Long contratoId, EstadoContrato nuevoEstado) {
+        // 1. Buscar el contrato actual en la base de datos
+        Contrato contrato = contratoRepository.findById(contratoId)
+            .orElseThrow(() -> new RuntimeException("Contrato no encontrado con el ID: " + contratoId));
+
+        EstadoContrato estadoActual = contrato.getEstado();
+
+        // 2. Controlar que no intenten revivir un contrato
+        if ((estadoActual == EstadoContrato.FINALIZADO || estadoActual == EstadoContrato.RESCINDIDO) 
+                && nuevoEstado == EstadoContrato.ACTIVO) {
+            throw new IllegalArgumentException("¡Error! No se puede volver a ACTIVAR un contrato que ya está FINALIZADO o RESCINDIDO.");
+        }
+
+        // 3. Controlar el paso de Borrador a Activo
+        if (estadoActual == EstadoContrato.BORRADOR && nuevoEstado != EstadoContrato.ACTIVO) {
+            throw new IllegalArgumentException("Un contrato en BORRADOR solo puede pasar a estado ACTIVO.");
+        }
+        
+        // 4. Controlar las salidas desde Activo
+        if (estadoActual == EstadoContrato.ACTIVO 
+                && nuevoEstado != EstadoContrato.FINALIZADO 
+                && nuevoEstado != EstadoContrato.RESCINDIDO) {
+            throw new IllegalArgumentException("Un contrato ACTIVO solo puede pasar a FINALIZADO o RESCINDIDO.");
+        }
+        if (nuevoEstado == EstadoContrato.ACTIVO && estadoActual != EstadoContrato.ACTIVO) {
+            // Buscamos si la propiedad ya tiene un contrato ACTIVO en la base de datos
+            List<Contrato> activos = contratoRepository.findByPropiedadIdAndEstado(contrato.getPropiedad().getId(), EstadoContrato.ACTIVO);
+            
+            // Si la lista no está vacía, significa que otra persona ya la tiene alquilada
+            if (!activos.isEmpty()) {
+                throw new IllegalArgumentException("¡Error! La propiedad ya cuenta con un contrato ACTIVO vigente.");
+            }
+        }
+
+        // 5. Si no saltó ningún error, guardamos el nuevo estado en la BD
+        contrato.setEstado(nuevoEstado);
+        contratoRepository.save(contrato);
+    }
 }
+	
+

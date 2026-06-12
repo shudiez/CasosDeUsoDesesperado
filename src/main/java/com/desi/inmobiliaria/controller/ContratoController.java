@@ -70,8 +70,25 @@ public class ContratoController {
         }
         
         try {
-        	  contratoService.guardar(contrato);
+        	
+        	if(contrato.getId() != null) {
+        		contratoService.cambiarEstado(contrato.getId(), contrato.getEstado());
+        	} else {
+        		contratoService.guardar(contrato);
+        	}
+        	       	        	  
         	  return "redirect:/contratos";
+       
+        } catch(IllegalArgumentException e) { 
+            // Capturamos el error específico de tus reglas de negocio
+            result.rejectValue("estado", "error.contrato", e.getMessage());
+            
+            model.addAttribute("propiedades", propiedadService.listarTodas());
+            model.addAttribute("inquilinos", personaService.listarTodas());
+            model.addAttribute("estados", EstadoContrato.values());
+            
+            return "contrato-form";
+        	  
         } catch(RuntimeException e) {
         	
         	result.rejectValue("propiedad", "error.propiedad", e.getMessage());
@@ -83,17 +100,8 @@ public class ContratoController {
         	return "contrato-form";
         }
    
-        
-    }
+     }
 
-    /*
-    // 3. LISTAR CONTRATOS
-    @GetMapping("/contratos")
-    public String listar(Model model) {
-        model.addAttribute("contratos", contratoService.listarTodos());
-        return "contrato-list";
-    }
-    */
     
     //3.1 listar con filtros.
     @GetMapping("/contratos")
@@ -144,4 +152,10 @@ public class ContratoController {
         contratoService.eliminar(id);
         return "redirect:/contratos";
     }
+    
+    
+    
+    
+    
+    
 }
