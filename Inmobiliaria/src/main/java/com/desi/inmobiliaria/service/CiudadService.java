@@ -1,13 +1,16 @@
 package com.desi.inmobiliaria.service;
 
-import org.springframework.stereotype.Service;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.desi.inmobiliaria.entity.Ciudad;
-import com.desi.inmobiliaria.repository.CiudadRepository;
 
+public interface CiudadService {
+
+	List<Ciudad> listarTodas();
+
+}
+
+/*
 @Service
 //Se encarga de la lógica relacionada con las ciudades
 public class CiudadService {
@@ -23,3 +26,4 @@ public class CiudadService {
 	}
 
 }
+*/
