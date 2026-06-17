@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.desi.entity.Contrato;
-import com.desi.entity.EstadoContrato;
-import com.desi.service.ContratoService;
-import com.desi.service.PropiedadService;
-import com.desi.service.PersonaService;
+import com.desi.inmobiliaria.entity.Contrato;
+import com.desi.inmobiliaria.entity.EstadoContrato;
+import com.desi.inmobiliaria.service.ContratoService;
+import com.desi.inmobiliaria.service.PropiedadService;
+import com.desi.inmobiliaria.service.PersonaService;
 
 import jakarta.validation.Valid;
 
