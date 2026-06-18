@@ -77,14 +77,29 @@
 	            <div class="text-danger" th:if="${#fields.hasErrors('importeMensual')}" th:errors="*{importeMensual}"></div>
 	        </div>
 
-	        <div class="col-md-6 mb-3">
-	            <label class="form-label">Estado Inicial:</label>
-	            <select th:field="*{estado}" class="form-select" required>
-	                <option th:each="est : ${estados}" th:value="${est}" th:text="${est}"></option>
-	            </select>
-	            <div class="text-danger" th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"></div>
-	        </div>
-	    </div>
+			<div class="col-md-6 mb-3">
+			        <label class="form-label">Estado Contrato:</label>
+			        
+			        <div th:if="${contrato.id == null}">
+			            <select th:field="*{estado}" class="form-select" required>
+			                <option th:each="est : ${estados}" 
+			                        th:if="${est.name() == 'BORRADOR' }" 
+			                        th:value="${est}" 
+			                        th:text="${est}">
+			                </option>
+			            </select>
+			            <small class="form-text text-muted">Los contratos nuevos solo pueden iniciar en Borrador o Activo.</small>
+			        </div>
+
+			        <div th:unless="${contrato.id == null}">
+			            <select th:field="*{estado}" class="form-select" required>
+			                <option th:each="est : ${estados}" th:value="${est}" th:text="${est}"></option>
+			            </select>
+			            <div class="text-danger" th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"></div>
+			        </div>
+			    </div>
+	    
+			</div>
 
 	    <div class="mb-3">
 	        <label class="form-label">Descripción / Términos del Contrato:</label>
