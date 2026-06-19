@@ -14,7 +14,7 @@
 		<h3 style="color:red" th:text="${error}"></h3>
 	</div>
 
-	<form th:action="@{/propiedades}" th:object="${propiedad}" method="post">
+	<form th:action="@{/propiedades}" th:object="${propiedadForm}" method="post">
 		<input type="hidden" th:field="*{id}">
 
 		<!-- DIRECCION -->
@@ -61,7 +61,7 @@
 
 		<!-- CIUDAD -->
 		<label>Ciudad:</label>
-		<select th:field="*{ciudad}" required>
+		<select th:field="*{ciudadId}" required>
 			<option value="">
 				Seleccione...
 			</option>
@@ -72,7 +72,7 @@
 
 		<!-- PROPIETARIO -->
 		<label>Propietario:</label>
-		<select th:field="*{propietario}" required>
+		<select th:field="*{propietarioId}" required>
 			<option value="">Seleccione...</option>
 			<option th:each="propietario : ${propietarios}" th:value="${propietario.id}"
 				th:text="${propietario.nombre + ' ' + propietario.apellido}">

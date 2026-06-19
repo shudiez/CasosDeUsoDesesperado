@@ -34,8 +34,8 @@ public class PropiedadController {
 	@GetMapping("/propiedad/nueva")
 	public String nuevaPropiedad(Model model) {
 
-		// Cargo las listas que necesita el formulario para mostrar opciones
-		model.addAttribute("propiedad", new Propiedad());
+		model.addAttribute("propiedadForm", new PropiedadForm());
+
 		model.addAttribute("tipos", TipoPropiedad.values());
 		model.addAttribute("estados", EstadoDisponibilidad.values());
 		model.addAttribute("ciudades", ciudadService.listarTodas());
@@ -51,8 +51,10 @@ public class PropiedadController {
 
 		Propiedad propiedad = propiedadService.buscarPorId(id);
 
-		// Envío a la vista la propiedad y las listas necesarias para el formulario
-		model.addAttribute("propiedad", propiedad);
+		PropiedadForm form = PropiedadForm.fromPojo(propiedad);
+
+		model.addAttribute("propiedadForm", form);
+
 		model.addAttribute("tipos", TipoPropiedad.values());
 		model.addAttribute("estados", EstadoDisponibilidad.values());
 		model.addAttribute("ciudades", ciudadService.listarTodas());
@@ -64,17 +66,22 @@ public class PropiedadController {
 	// GUARDAR PROPIEDAD
 	// Guarda una nueva propiedad o actualiza una existente
 	@PostMapping("/propiedades")
-	public String guardar(Propiedad propiedad, Model model) {
-		System.out.println("ENTRO AL GUARDAR");
+	public String guardar(PropiedadForm propiedadForm, Model model) {
+
 		try {
+
+			Propiedad propiedad = propiedadForm.toPojo();
+
 			propiedadService.guardar(propiedad);
+
 			return "redirect:/propiedades";
 
 		} catch (Excepcion e) {
 
-			System.out.println("ERROR: " + e.getMessage());
 			model.addAttribute("error", e.getMessage());
-			model.addAttribute("propiedad", propiedad);
+
+			model.addAttribute("propiedadForm", propiedadForm);
+
 			model.addAttribute("tipos", TipoPropiedad.values());
 			model.addAttribute("estados", EstadoDisponibilidad.values());
 			model.addAttribute("ciudades", ciudadService.listarTodas());
