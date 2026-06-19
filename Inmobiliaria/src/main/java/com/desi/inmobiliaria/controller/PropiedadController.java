@@ -3,7 +3,9 @@ package com.desi.inmobiliaria.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +18,7 @@ import com.desi.inmobiliaria.service.PersonaService;
 import com.desi.inmobiliaria.service.PropiedadService;
 
 import excepciones.Excepcion;
+import jakarta.validation.Valid;
 
 @Controller
 public class PropiedadController {
@@ -66,7 +69,18 @@ public class PropiedadController {
 	// GUARDAR PROPIEDAD
 	// Guarda una nueva propiedad o actualiza una existente
 	@PostMapping("/propiedades")
-	public String guardar(PropiedadForm propiedadForm, Model model) {
+	public String guardar(@Valid @ModelAttribute("propiedadForm") PropiedadForm propiedadForm, BindingResult result,
+			Model model) {
+
+		if (result.hasErrors()) {
+
+			model.addAttribute("tipos", TipoPropiedad.values());
+			model.addAttribute("estados", EstadoDisponibilidad.values());
+			model.addAttribute("ciudades", ciudadService.listarTodas());
+			model.addAttribute("propietarios", personaService.listarTodas());
+
+			return "propiedad-form";
+		}
 
 		try {
 

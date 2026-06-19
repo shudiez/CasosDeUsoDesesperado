@@ -19,36 +19,40 @@
 
 		<!-- DIRECCION -->
 		<label>Dirección:</label>
-		<input type="text" th:field="*{direccion}" required>
+		<input type="text" th:field="*{direccion}">
+
+		<div th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}" style="color:red">
+		</div>
 		<br><br>
 
 		<!-- TIPO DE PROPIEDAD -->
 		<label>Tipo de Propiedad:</label>
-		<select th:field="*{tipo}" required>
+		<select th:field="*{tipo}">
 			<option value="">Seleccione...</option>
 			<option th:each="tipo : ${tipos}" th:value="${tipo}" th:text="${tipo}">
 			</option>
 		</select>
+		
 		<br><br>
 
 		<!-- CANTIDAD DE AMBIENTES -->
 		<label>Cantidad de Ambientes:</label>
-		<input type="number" th:field="*{cantidadAmbientes}" min="1" required>
+		<input type="number" th:field="*{cantidadAmbientes}" min="1">
 		<br><br>
 
 		<!-- METROS CUADRADOS -->
 		<label>Metros Cuadrados:</label>
-		<input type="number" step="0.01" th:field="*{metrosCuadrados}" min="1" required>
+		<input type="number" step="0.01" th:field="*{metrosCuadrados}" min="1">
 		<br><br>
 
 		<!-- DESCRIPCION -->
 		<label>Descripción:</label>
-		<input type="text" th:field="*{descripcion}" required>
+		<input type="text" th:field="*{descripcion}">
 		<br><br>
 
 		<!-- COMODIDADES-->
 		<label>Comodidades:</label>
-		<input type="text" th:field="*{comodidades}" required>
+		<input type="text" th:field="*{comodidades}">
 		<br><br>
 
 		<!-- ESTADO -->
@@ -61,23 +65,28 @@
 
 		<!-- CIUDAD -->
 		<label>Ciudad:</label>
-		<select th:field="*{ciudadId}" required>
+		<select th:field="*{ciudadId}">
 			<option value="">
 				Seleccione...
 			</option>
 			<option th:each="ciudad : ${ciudades}" th:value="${ciudad.id}" th:text="${ciudad.nombre}">
 			</option>
 		</select>
+		<div th:if="${#fields.hasErrors('ciudadId')}" th:errors="*{ciudadId}" style="color:red">
+		</div>
 		<br><br>
 
 		<!-- PROPIETARIO -->
 		<label>Propietario:</label>
-		<select th:field="*{propietarioId}" required>
+		<select th:field="*{propietarioId}">
 			<option value="">Seleccione...</option>
 			<option th:each="propietario : ${propietarios}" th:value="${propietario.id}"
 				th:text="${propietario.nombre + ' ' + propietario.apellido}">
 			</option>
 		</select>
+
+		<div th:if="${#fields.hasErrors('propietarioId')}" th:errors="*{propietarioId}" style="color:red">
+		</div>
 		<br><br>
 
 		<button type="submit">Guardar</button>
