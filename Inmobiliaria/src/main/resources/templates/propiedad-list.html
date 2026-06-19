@@ -60,6 +60,11 @@
 
 	<br><br>
 
+	<div th:if="${error}">
+		<h3 style="color:red" th:text="${error}"></h3>
+	</div>
+
+
 	<table border="1">
 		<tr>
 			<th>ID</th>
@@ -85,7 +90,9 @@
 			<td th:text="${propiedad.cantidadAmbientes}"></td>
 			<td th:text="${propiedad.metrosCuadrados}"></td>
 			<td th:text="${propiedad.estadoDisponibilidad}"></td>
-			<td th:text="${propiedad.propietario.nombre + ' ' + propiedad.propietario.apellido}"></td>
+			<td
+				th:text="${propiedad.propietario != null ? propiedad.propietario.nombre + ' ' + propiedad.propietario.apellido : 'Sin propietario'}">
+			</td>
 			<td th:text="${propiedad.descripcion}"></td>
 
 			<!-- EDITAR -->
@@ -95,7 +102,8 @@
 				</a>
 
 				<!-- ELIMINAR -->
-				<a th:href="@{/propiedad/eliminar/{id}(id=${propiedad.id})}">
+				<a th:href="@{/propiedad/eliminar/{id}(id=${propiedad.id})}"
+					onclick="return confirm('¿Está seguro de eliminar la propiedad?')">
 					Eliminar
 				</a>
 			</td>

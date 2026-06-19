@@ -15,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
 
 
 @Entity
@@ -91,6 +92,11 @@ public class Contrato {
     public void setEliminado(boolean eliminado) { this.eliminado = eliminado; }
 
     public List<HistorialEstadoContrato> getHistorialEstados() { return historialEstados; }
+
+    public void setId(Long id) {
+		this.id = id;
+	}
+
 }
 	
 	

@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Size;
 
 @Entity
 //Guarda toda la información de una propiedad
@@ -17,21 +18,24 @@ public class Propiedad {
 	// ID generado automáticamente por la base de datos
 	private Long id;
 
+	@Size(min = 1, max = 200, message = "La dirección es obligatoria")
 	private String direccion;
 	private Integer cantidadAmbientes;
 	private Double metrosCuadrados;
+
+	@Size(min = 1, max = 500, message = "La descripción es obligatoria")
 	private String descripcion;
 	private String comodidades;
 
 	// Permite ocultar una propiedad sin eliminarla de la base de datos
-	private boolean eliminada;
+	private boolean eliminada = false;
 
 	// Persona dueña de la propiedad
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private Persona propietario;
 
 	// Ciudad donde está ubicada la propiedad
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private Ciudad ciudad;
 
 	// Tipo de inmueble

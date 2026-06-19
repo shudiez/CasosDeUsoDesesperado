@@ -15,6 +15,8 @@ import com.desi.inmobiliaria.service.CiudadService;
 import com.desi.inmobiliaria.service.PersonaService;
 import com.desi.inmobiliaria.service.PropiedadService;
 
+import excepciones.Excepcion;
+
 @Controller
 public class PropiedadController {
 
@@ -62,11 +64,24 @@ public class PropiedadController {
 	// GUARDAR PROPIEDAD
 	// Guarda una nueva propiedad o actualiza una existente
 	@PostMapping("/propiedades")
-	public String guardar(Propiedad propiedad) {
+	public String guardar(Propiedad propiedad, Model model) {
+		System.out.println("ENTRO AL GUARDAR");
+		try {
+			propiedadService.guardar(propiedad);
+			return "redirect:/propiedades";
 
-		propiedadService.guardar(propiedad);
+		} catch (Excepcion e) {
 
-		return "redirect:/propiedades";
+			System.out.println("ERROR: " + e.getMessage());
+			model.addAttribute("error", e.getMessage());
+			model.addAttribute("propiedad", propiedad);
+			model.addAttribute("tipos", TipoPropiedad.values());
+			model.addAttribute("estados", EstadoDisponibilidad.values());
+			model.addAttribute("ciudades", ciudadService.listarTodas());
+			model.addAttribute("propietarios", personaService.listarTodas());
+
+			return "propiedad-form";
+		}
 	}
 
 	// LISTAR PROPIEDADES
@@ -114,11 +129,25 @@ public class PropiedadController {
 	// ELIMINAR PROPIEDAD
 	// Elimina una propiedad según su ID
 	@GetMapping("/propiedad/eliminar/{id}")
-	public String eliminar(@PathVariable Long id) {
+	public String eliminar(@PathVariable Long id, Model model) {
 
-		propiedadService.eliminar(id);
+		try {
 
-		return "redirect:/propiedades";
+			propiedadService.eliminar(id);
+
+			return "redirect:/propiedades";
+
+		} catch (Excepcion e) {
+
+			model.addAttribute("error", e.getMessage());
+
+			model.addAttribute("propiedades", propiedadService.listarTodas());
+			model.addAttribute("ciudades", ciudadService.listarTodas());
+			model.addAttribute("tipos", TipoPropiedad.values());
+			model.addAttribute("estados", EstadoDisponibilidad.values());
+
+			return "propiedad-list";
+		}
 	}
 
 }

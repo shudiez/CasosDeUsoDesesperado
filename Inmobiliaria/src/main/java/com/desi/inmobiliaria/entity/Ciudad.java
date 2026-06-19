@@ -7,17 +7,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-//Guarda las ciudades que se usan en el sistema
 public class Ciudad {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	// ID único de la ciudad
 	private Long id;
 
 	private String nombre;
 
-	// Indica a qué provincia pertenece la ciudad
+	
 	@ManyToOne
 	private Provincia provincia;
 

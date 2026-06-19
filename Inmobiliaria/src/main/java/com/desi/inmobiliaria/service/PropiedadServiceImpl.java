@@ -14,6 +14,8 @@ import com.desi.inmobiliaria.entity.TipoPropiedad;
 import com.desi.inmobiliaria.repository.ContratoRepository;
 import com.desi.inmobiliaria.repository.HistorialEstadoPropiedadRepository;
 import com.desi.inmobiliaria.repository.PropiedadRepository;
+import excepciones.EntidadNoEncontradaException;
+import excepciones.Excepcion;
 
 @Service
 public class PropiedadServiceImpl implements PropiedadService {
@@ -28,35 +30,33 @@ public class PropiedadServiceImpl implements PropiedadService {
 	private ContratoRepository contratoRepository;
 
 	@Override
-	public Propiedad guardar(Propiedad propiedad) {
+	public Propiedad guardar(Propiedad propiedad) throws Excepcion {
 
 		if (propiedad.getDireccion() == null || propiedad.getDireccion().isBlank()) {
-			throw new RuntimeException("La dirección es obligatoria");
+			throw new Excepcion("La dirección es obligatoria");
 		}
 
 		if (propiedad.getDescripcion() == null || propiedad.getDescripcion().isBlank()) {
-			throw new RuntimeException("La descripción es obligatoria");
+			throw new Excepcion("La descripción es obligatoria");
 		}
 
 		if (propiedad.getCantidadAmbientes() == null || propiedad.getCantidadAmbientes() <= 0) {
-			throw new RuntimeException("La cantidad de ambientes debe ser mayor a cero");
+			throw new Excepcion("La cantidad de ambientes debe ser mayor a cero");
 		}
 
 		if (propiedad.getMetrosCuadrados() == null || propiedad.getMetrosCuadrados() <= 0) {
-			throw new RuntimeException("Los metros cuadrados deben ser mayores a cero");
+			throw new Excepcion("Los metros cuadrados deben ser mayores a cero");
 		}
 
 		if (propiedad.getEstadoDisponibilidad() == null) {
 			propiedad.setEstadoDisponibilidad(EstadoDisponibilidad.DISPONIBLE);
 		}
 
-		Propiedad propiedadExistente = propiedadRepository.findByDireccionAndCiudad(
-				propiedad.getDireccion(),
-				propiedad.getCiudad()
-		);
+		Propiedad propiedadExistente = propiedadRepository.findByDireccionAndCiudad(propiedad.getDireccion(),
+				propiedad.getCiudad());
 
 		if (propiedadExistente != null && !propiedadExistente.getId().equals(propiedad.getId())) {
-			throw new RuntimeException("Ya existe una propiedad con esa dirección y ciudad");
+			throw new Excepcion("Ya existe una propiedad con esa dirección y ciudad");
 		}
 
 		if (propiedad.getId() != null
@@ -64,7 +64,7 @@ public class PropiedadServiceImpl implements PropiedadService {
 						|| propiedad.getEstadoDisponibilidad() == EstadoDisponibilidad.INACTIVA)
 				&& contratoRepository.existsByPropiedadAndEstadoAndEliminadoFalse(propiedad, EstadoContrato.ACTIVO)) {
 
-			throw new RuntimeException("No se puede cambiar el estado porque existe un contrato activo");
+			throw new Excepcion("No se puede cambiar el estado porque existe un contrato activo");
 		}
 
 		Propiedad propiedadGuardada = propiedadRepository.save(propiedad);
@@ -86,16 +86,16 @@ public class PropiedadServiceImpl implements PropiedadService {
 
 	@Override
 	public Propiedad buscarPorId(Long id) {
-		return propiedadRepository.findById(id).orElse(null);
+		return propiedadRepository.findById(id).orElseThrow(() -> new EntidadNoEncontradaException("la propiedad", id));
 	}
 
 	@Override
-	public void eliminar(Long id) {
+	public void eliminar(Long id) throws Excepcion {
 
 		Propiedad propiedad = buscarPorId(id);
 
 		if (contratoRepository.existsByPropiedadAndEstadoAndEliminadoFalse(propiedad, EstadoContrato.ACTIVO)) {
-			throw new RuntimeException("No se puede eliminar la propiedad porque tiene un contrato activo vigente");
+			throw new Excepcion("No se puede eliminar la propiedad porque tiene un contrato activo vigente");
 		}
 
 		propiedad.setEliminada(true);

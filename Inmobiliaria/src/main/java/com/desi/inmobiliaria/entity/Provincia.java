@@ -6,12 +6,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-//Guarda las provincias que se van a usar en el sistema
 public class Provincia {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	// ID único de la provincia
 	private Long id;
 
 	private String nombre;
