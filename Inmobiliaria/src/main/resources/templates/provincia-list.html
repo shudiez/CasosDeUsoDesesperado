@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Lista de Provincias</title>
+</head>
+
+<body>
+
+	<h1>Lista de Provincias</h1>
+
+	<a href="/provincia/nueva">Nueva Provincia</a>
+
+	<br><br>
+
+	<table border="1">
+
+		<tr>
+			<th>ID</th>
+			<th>Nombre</th>
+			<th>Acciones</th>
+		</tr>
+
+		<tr th:each="provincia : ${provincias}">
+
+			<td th:text="${provincia.id}"></td>
+
+			<td th:text="${provincia.nombre}"></td>
+
+			<td>
+
+				<a th:href="@{/provincia/editar/{id}(id=${provincia.id})}">
+					Editar
+				</a>
+
+				<a th:href="@{/provincia/eliminar/{id}(id=${provincia.id})}">
+					Eliminar
+				</a>
+
+			</td>
+
+		</tr>
+
+	</table>
+
+</body>
+
+</html>

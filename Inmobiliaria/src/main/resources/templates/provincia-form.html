@@ -3,14 +3,14 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Nueva Ciudad</title>
+	<title>Provincia</title>
 </head>
 
 <body>
 
-	<h1>Alta de Ciudad</h1>
+	<h1>Provincia</h1>
 
-	<form th:action="@{/ciudades}" th:object="${ciudadForm}" method="post">
+	<form th:action="@{/provincias}" th:object="${provinciaForm}" method="post">
 
 		<input type="hidden" th:field="*{id}">
 
@@ -23,17 +23,6 @@
 
 		<br><br>
 
-		<label>Provincia:</label>
-
-		<select th:field="*{provinciaId}">
-			<option value="">Seleccione...</option>
-
-			<option th:each="provincia : ${provincias}" th:value="${provincia.id}" th:text="${provincia.nombre}">
-			</option>
-		</select>
-
-		<br><br>
-
 		<button type="submit">
 			Guardar
 		</button>
@@ -42,7 +31,7 @@
 
 	<br>
 
-	<a href="/ciudades">
+	<a href="/provincias">
 		Volver al listado
 	</a>
 

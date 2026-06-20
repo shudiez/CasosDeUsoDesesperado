@@ -3,10 +3,13 @@ package com.desi.inmobiliaria.controller;
 import com.desi.inmobiliaria.entity.Ciudad;
 import com.desi.inmobiliaria.entity.Provincia;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class CiudadForm {
 
 	private Long id;
 
+	@NotBlank(message = "El nombre de la ciudad es obligatorio")
 	private String nombre;
 
 	private Long provinciaId;
