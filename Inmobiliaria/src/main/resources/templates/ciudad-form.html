@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Nueva Ciudad</title>
+</head>
+
+<body>
+
+	<h1>Alta de Ciudad</h1>
+
+	<form th:action="@{/ciudades}" th:object="${ciudadForm}" method="post">
+
+		<input type="hidden" th:field="*{id}">
+
+		<label>Nombre:</label>
+
+		<input type="text" th:field="*{nombre}">
+
+		<br><br>
+
+		<button type="submit">
+			Guardar
+		</button>
+
+	</form>
+
+	<br>
+
+	<a href="/ciudades">
+		Volver al listado
+	</a>
+
+</body>
+
+</html>
