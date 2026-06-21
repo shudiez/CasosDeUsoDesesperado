@@ -2,31 +2,20 @@ package com.desi.inmobiliaria.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.desi.inmobiliaria.entity.Provincia;
-import com.desi.inmobiliaria.repository.ProvinciaRepository;
 
-@Service
-public class ProvinciaService {
+public interface ProvinciaService {
 
-	@Autowired
-	private ProvinciaRepository provinciaRepository;
+	// METODO LISTAR PROVINCIAS
+	List<Provincia> listarTodas();
 
-	public List<Provincia> listarTodas() {
-		return provinciaRepository.findAll();
-	}
+	// METODO BUSCAR PROVINCIA
+	Provincia buscarPorId(Long id);
 
-	public Provincia buscarPorId(Long id) {
-		return provinciaRepository.findById(id).orElse(null);
-	}
+	// METODO GUARDAR PROVINCIA
+	Provincia guardar(Provincia provincia);
 
-	public Provincia guardar(Provincia provincia) {
-		return provinciaRepository.save(provincia);
-	}
+	// METODO ELIMINAR PROVINCIA
+	void eliminar(Long id);
 
-	public void eliminar(Long id) {
-		provinciaRepository.deleteById(id);
-	}
 }

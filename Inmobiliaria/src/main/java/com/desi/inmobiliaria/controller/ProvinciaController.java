@@ -17,6 +17,7 @@ public class ProvinciaController {
 	@Autowired
 	private ProvinciaService provinciaService;
 
+	// METODO LISTAR PROVINCAS
 	@GetMapping("/provincias")
 	public String listar(Model model) {
 
@@ -25,6 +26,7 @@ public class ProvinciaController {
 		return "provincia-list";
 	}
 
+	// METODO NUEVA PROVINCIA
 	@GetMapping("/provincia/nueva")
 	public String nuevaProvincia(Model model) {
 
@@ -33,6 +35,7 @@ public class ProvinciaController {
 		return "provincia-form";
 	}
 
+	// METODO GUARDAR PROVINCIA
 	@PostMapping("/provincias")
 	public String guardar(@Valid @ModelAttribute("provinciaForm") ProvinciaForm provinciaForm, BindingResult result,
 			Model model) {
@@ -41,13 +44,25 @@ public class ProvinciaController {
 			return "provincia-form";
 		}
 
-		Provincia provincia = provinciaForm.toPojo();
+		try {
 
-		provinciaService.guardar(provincia);
+			Provincia provincia = provinciaForm.toPojo();
 
-		return "redirect:/provincias";
+			provinciaService.guardar(provincia);
+
+			return "redirect:/provincias";
+
+		} catch (RuntimeException e) {
+
+			model.addAttribute("error", e.getMessage());
+
+			model.addAttribute("provinciaForm", provinciaForm);
+
+			return "provincia-form";
+		}
 	}
 
+	// METODO EDITAR PROVINCIAS
 	@GetMapping("/provincia/editar/{id}")
 	public String editar(@PathVariable Long id, Model model) {
 
@@ -60,11 +75,23 @@ public class ProvinciaController {
 		return "provincia-form";
 	}
 
+	// METODO ELIMINAR PROVINCIA
 	@GetMapping("/provincia/eliminar/{id}")
-	public String eliminar(@PathVariable Long id) {
+	public String eliminar(@PathVariable Long id, Model model) {
 
-		provinciaService.eliminar(id);
+		try {
 
-		return "redirect:/provincias";
+			provinciaService.eliminar(id);
+
+			return "redirect:/provincias";
+
+		} catch (RuntimeException e) {
+
+			model.addAttribute("error", e.getMessage());
+
+			model.addAttribute("provincias", provinciaService.listarTodas());
+
+			return "provincia-list";
+		}
 	}
 }

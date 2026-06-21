@@ -70,6 +70,7 @@
 			<th>ID</th>
 			<th>Dirección</th>
 			<th>Ciudad</th>
+			<th>Provincia</th>
 			<th>Tipo de propiedad</th>
 			<th>Cantidad de Ambientes</th>
 			<th>Metros Cuadrados</th>
@@ -86,6 +87,9 @@
 			<td th:text="${propiedad.id}"></td>
 			<td th:text="${propiedad.direccion}"></td>
 			<td th:text="${propiedad.ciudad != null ? propiedad.ciudad.nombre : 'Sin ciudad'}"></td>
+			<td
+				th:text="${propiedad.ciudad != null && propiedad.ciudad.provincia != null ? propiedad.ciudad.provincia.nombre : 'Sin provincia'}">
+			</td>
 			<td th:text="${propiedad.tipo}"></td>
 			<td th:text="${propiedad.cantidadAmbientes}"></td>
 			<td th:text="${propiedad.metrosCuadrados}"></td>

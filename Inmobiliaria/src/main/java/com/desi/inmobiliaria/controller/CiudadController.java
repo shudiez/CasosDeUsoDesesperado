@@ -51,17 +51,27 @@ public class CiudadController {
 
 		if (result.hasErrors()) {
 
-			model.addAttribute("provincias",
-					provinciaService.listarTodas());
+			model.addAttribute("provincias", provinciaService.listarTodas());
 
 			return "ciudad-form";
 		}
 
-		Ciudad ciudad = ciudadForm.toPojo();
+		try {
 
-		ciudadService.guardar(ciudad);
+			Ciudad ciudad = ciudadForm.toPojo();
 
-		return "redirect:/ciudades";
+			ciudadService.guardar(ciudad);
+
+			return "redirect:/ciudades";
+
+		} catch (RuntimeException e) {
+
+			model.addAttribute("error", e.getMessage());
+
+			model.addAttribute("provincias", provinciaService.listarTodas());
+
+			return "ciudad-form";
+		}
 	}
 
 	// EDITAR CIUDADES
@@ -80,10 +90,21 @@ public class CiudadController {
 
 	// ELIMINAR CIUDAD
 	@GetMapping("/ciudad/eliminar/{id}")
-	public String eliminarCiudad(@PathVariable Long id) {
+	public String eliminarCiudad(@PathVariable Long id, Model model) {
 
-		ciudadService.eliminar(id);
+		try {
 
-		return "redirect:/ciudades";
+			ciudadService.eliminar(id);
+
+			return "redirect:/ciudades";
+
+		} catch (RuntimeException e) {
+
+			model.addAttribute("error", e.getMessage());
+
+			model.addAttribute("ciudades", ciudadService.listarTodas());
+
+			return "ciudad-list";
+		}
 	}
 }

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Persona</title>
+</head>
+
+<body>
+
+	<h1>Alta de Persona</h1>
+
+	<div th:if="${error}">
+		<h3 style="color:red" th:text="${error}"></h3>
+	</div>
+
+	<form th:action="@{/personas}" th:object="${personaForm}" method="post">
+
+		<input type="hidden" th:field="*{id}">
+
+		<label>Nombre:</label>
+		<input type="text" th:field="*{nombre}">
+
+		<div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" style="color:red">
+		</div>
+
+		<br><br>
+
+		<label>Apellido:</label>
+		<input type="text" th:field="*{apellido}">
+
+		<div th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}" style="color:red">
+		</div>
+
+		<br><br>
+
+		<label>DNI/CUIT:</label>
+		<input type="text" th:field="*{dniCuit}">
+
+		<br><br>
+
+		<label>Teléfono:</label>
+		<input type="text" th:field="*{telefono}">
+
+		<br><br>
+
+		<label>Email:</label>
+		<input type="email" th:field="*{email}">
+
+		<br><br>
+
+		<label>Domicilio:</label>
+		<input type="text" th:field="*{domicilio}">
+
+		<br><br>
+
+		<button type="submit">
+			Guardar
+		</button>
+
+	</form>
+
+	<br>
+
+	<a href="/personas">
+		Volver al listado
+	</a>
+
+</body>
+
+</html>

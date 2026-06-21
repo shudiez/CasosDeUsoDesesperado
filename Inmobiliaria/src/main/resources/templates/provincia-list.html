@@ -14,6 +14,11 @@
 
 	<br><br>
 
+	<div th:if="${error}">
+		<h3 style="color:red" th:text="${error}">
+		</h3>
+	</div>
+
 	<table border="1">
 
 		<tr>

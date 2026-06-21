@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Lista de Personas</title>
+</head>
+
+<body>
+
+	<h1>Lista de Personas</h1>
+
+	<a href="/persona/nueva">Nueva Persona</a>
+
+	<br><br>
+
+	<div th:if="${error}">
+		<h3 style="color:red" th:text="${error}">
+		</h3>
+	</div>
+
+	<table border="1">
+
+		<tr>
+			<th>ID</th>
+			<th>Nombre</th>
+			<th>Apellido</th>
+			<th>DNI/CUIT</th>
+			<th>Teléfono</th>
+			<th>Email</th>
+			<th>Domicilio</th>
+			<th>Acciones</th>
+		</tr>
+
+		<tr th:each="persona : ${personas}">
+
+			<td th:text="${persona.id}"></td>
+			<td th:text="${persona.nombre}"></td>
+			<td th:text="${persona.apellido}"></td>
+			<td th:text="${persona.dniCuit}"></td>
+			<td th:text="${persona.telefono}"></td>
+			<td th:text="${persona.email}"></td>
+			<td th:text="${persona.domicilio}"></td>
+
+			<td>
+
+				<a th:href="@{/persona/editar/{id}(id=${persona.id})}">
+					Editar
+				</a>
+
+				<a th:href="@{/persona/eliminar/{id}(id=${persona.id})}"
+					onclick="return confirm('¿Está seguro de eliminar la persona?')">
+					Eliminar
+				</a>
+
+			</td>
+
+		</tr>
+
+	</table>
+
+</body>
+
+</html>

@@ -14,6 +14,11 @@
 
 	<br><br>
 
+	<div th:if="${error}">
+		<h3 style="color:red" th:text="${error}">
+		</h3>
+	</div>
+
 	<table border="1">
 
 		<tr>
@@ -30,14 +35,15 @@
 			<td th:text="${ciudad.nombre}"></td>
 
 			<td th:text="${ciudad.provincia != null ? ciudad.provincia.nombre : 'Sin provincia'}"></td>
-			
+
 			<td>
 
 				<a th:href="@{/ciudad/editar/{id}(id=${ciudad.id})}">
 					Editar
 				</a>
 
-				<a th:href="@{/ciudad/eliminar/{id}(id=${ciudad.id})}">
+				<a th:href="@{/ciudad/eliminar/{id}(id=${ciudad.id})}"
+					onclick="return confirm('¿Está seguro de eliminar la ciudad?')">
 					Eliminar
 				</a>
 

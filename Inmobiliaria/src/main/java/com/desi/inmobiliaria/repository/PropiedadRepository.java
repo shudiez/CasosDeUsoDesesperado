@@ -30,4 +30,7 @@ public interface PropiedadRepository extends JpaRepository<Propiedad, Long> {
 
 	List<Propiedad> findByEstadoDisponibilidadAndEliminadaFalse(EstadoDisponibilidad estado);
 
+	boolean existsByPropietarioId(Long propietarioId);
+
+	boolean existsByCiudadId(Long ciudadId);
 }

@@ -10,6 +10,10 @@
 
 	<h1>Alta de Ciudad</h1>
 
+	<div th:if="${error}">
+		<h3 style="color:red" th:text="${error}"></h3>
+	</div>
+
 	<form th:action="@{/ciudades}" th:object="${ciudadForm}" method="post">
 
 		<input type="hidden" th:field="*{id}">
