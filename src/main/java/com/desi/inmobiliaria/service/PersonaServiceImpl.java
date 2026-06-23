@@ -1,9 +1,9 @@
-package com.desi.inmobiliria.service;
+package com.desi.inmobiliaria.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import com.desi.entity.Persona;
-import com.desi.repository.PersonaRepository;
+import com.desi.inmobiliaria.entity.Persona;
+import com.desi.inmobiliaria.repository.PersonaRepository;
 
 
 @Service

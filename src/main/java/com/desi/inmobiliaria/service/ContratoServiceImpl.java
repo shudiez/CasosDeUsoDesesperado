@@ -1,19 +1,19 @@
-package com.desi.inmobiliria.service;
+package com.desi.inmobiliaria.service;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.desi.entity.Contrato;
-import com.desi.entity.EstadoContrato;
-import com.desi.entity.EstadoDisponibilidad;
-import com.desi.entity.HistorialEstadoContrato;
-import com.desi.entity.Propiedad;
-import com.desi.repository.ContratoRepository;
-import com.desi.repository.PropiedadRepository;
-import com.desi.service.ContratoService;
-import com.desi.repository.HistorialEstadoContratoRepository;
+import com.desi.inmobiliaria.entity.Contrato;
+import com.desi.inmobiliaria.entity.EstadoContrato;
+import com.desi.inmobiliaria.entity.EstadoDisponibilidad;
+import com.desi.inmobiliaria.entity.HistorialEstadoContrato;
+import com.desi.inmobiliaria.entity.Propiedad;
+import com.desi.inmobiliaria.repository.ContratoRepository;
+import com.desi.inmobiliaria.repository.PropiedadRepository;
+import com.desi.inmobiliaria.service.ContratoService;
+import com.desi.inmobiliaria.repository.HistorialEstadoContratoRepository;
 
 @Service
 public class ContratoServiceImpl implements ContratoService{
@@ -130,6 +130,8 @@ public class ContratoServiceImpl implements ContratoService{
             throw new IllegalArgumentException("Un contrato ACTIVO solo puede pasar a FINALIZADO o RESCINDIDO.");
         }
         
+        Propiedad propiedad = contrato.getPropiedad();
+        
         if (nuevoEstado == EstadoContrato.ACTIVO) {
         /*if (nuevoEstado == EstadoContrato.ACTIVO && estadoActual != EstadoContrato.ACTIVO) {*/
             // Buscamos si la propiedad ya tiene un contrato ACTIVO en la base de datos
@@ -139,12 +141,13 @@ public class ContratoServiceImpl implements ContratoService{
             if (!activos.isEmpty()) {
                 throw new IllegalArgumentException("¡Error! La propiedad ya cuenta con un contrato ACTIVO vigente.");
             }
-            Propiedad propiedad = contrato.getPropiedad();
+            
             if(propiedad != null) {
             	propiedad.setEstadoDisponibilidad(EstadoDisponibilidad.ALQUILADA);
             	propiedadRepository.save(propiedad);
             }
-            
+             
+        }
          //  Lógica para pasar de de FINALIZADO O RESCINDIDO a propiedad DISPONIBLE.
             if (nuevoEstado == EstadoContrato.FINALIZADO || nuevoEstado == EstadoContrato.RESCINDIDO) {
                 if (propiedad != null) {
@@ -154,7 +157,7 @@ public class ContratoServiceImpl implements ContratoService{
                 }
             }
             
-        }
+       
 
         // 5. Si no saltó ningún error, guardamos el nuevo estado en la BD
         contrato.setEstado(nuevoEstado);
