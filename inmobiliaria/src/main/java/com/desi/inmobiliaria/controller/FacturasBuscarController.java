@@ -40,7 +40,7 @@ public class FacturasBuscarController {
 		modelo.addAttribute("formBean", form);
 		modelo.addAttribute("facturas", facturaService.getAll());
 		cargarCombosFiltro(modelo);
-		return "listar";
+		return "Facturalistar";
 	}
 
 	@ModelAttribute("estados")
@@ -65,7 +65,7 @@ public class FacturasBuscarController {
 
 			cargarCombosFiltro(modelo);
 			modelo.addAttribute("formBean", formBean);
-			return "listar";
+			return "Facturalistar";
 		}
 
 		if (action.equals("Cancelar")) {

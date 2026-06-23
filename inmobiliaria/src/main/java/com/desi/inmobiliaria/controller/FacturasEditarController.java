@@ -34,7 +34,7 @@ public class FacturasEditarController {
 		FacturaForm form = new FacturaForm();
 		model.addAttribute("facturaForm", form);
 		cargarAtributosFormulario(model);
-		return "form"; // Apunta a form.html
+		return "Facturasform"; 
 	}
 
 	// 4.2 Modificación - Busca la factura y la precarga en el formulario
@@ -45,7 +45,7 @@ public class FacturasEditarController {
 			FacturaForm form = FacturaForm.fromPojo(factura); // Convierte la entidad a Formulario
 			model.addAttribute("facturaForm", form);
 			cargarAtributosFormulario(model);
-			return "form";
+			return "Facturasform";
 		} catch (Exception e) {
 			model.addAttribute("error", e.getMessage());
 			return "redirect:/facturas";
@@ -63,7 +63,7 @@ public class FacturasEditarController {
 			// Volvemos a cargar las listas para los desplegables para que no se rompa la
 			// pantalla
 			cargarAtributosFormulario(model);
-			return "form";
+			return "Facturasform";
 		}
 
 		try {
@@ -76,7 +76,7 @@ public class FacturasEditarController {
 		} catch (Exception e) {
 			model.addAttribute("error", "Error al procesar la factura: " + e.getMessage());
 			cargarAtributosFormulario(model);
-			return "form";
+			return "Facturasform";
 		}
 	}
 
