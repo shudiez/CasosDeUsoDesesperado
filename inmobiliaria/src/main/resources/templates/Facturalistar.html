@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Facturas</title>
+</head>
+
+<body>
+
+	<h1>Listado de Facturas</h1>
+
+	<div th:if="${error}" th:text="${error}"
+		style="background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-weight: bold; border: 1px solid #f5c6cb;">
+	</div>
+
+	<div th:if="${mensajeExito}" th:text="${mensajeExito}"
+		style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #c3e6cb;">
+	</div>
+
+	<form method="post" th:action="@{/facturas}" th:object="${formBean}">
+
+		<label style="font-weight: bold;">Filtrar por Estado:</label>
+		<select th:field="*{estado}">
+			<option value="">-- Todos los estados --</option>
+			<option th:each="e : ${estados}" th:value="${e}" th:text="${e}"></option>
+		</select>
+
+		<br /><br />
+
+		<label style="font-weight: bold;">Filtrar por Contrato:</label>
+		<select th:field="*{contratoId}">
+			<option value="">-- Todos los contratos --</option>
+			<option th:each="c : ${contratos}" th:value="${c.id}" th:text="'Contrato N° ' + ${c.id}"></option>
+		</select>
+
+		<br /><br />
+
+		<label style="font-weight: bold;">Filtrar por Propiedad:</label>
+		<select th:field="*{propiedadId}">
+			<option value="">-- Todas las propiedades --</option>
+			<option th:each="p : ${propiedades}" th:value="${p.id}" th:text="${p.direccion}"></option>
+		</select>
+
+		<br /><br />
+
+		<label style="font-weight: bold;">Filtrar por Inquilino:</label>
+		<select th:field="*{inquilinoId}">
+			<option value="">-- Todos los inquilinos --</option>
+			<option th:each="i : ${inquilinos}" th:value="${i.id}" th:text="${i.nombre + ' ' + i.apellido}"></option>
+		</select>
+
+		<br /><br />
+
+		<label style="font-weight: bold;">Fecha Vencimiento Desde:</label>
+		<input type="date" th:field="*{fechaDesde}" />
+
+		<label style="font-weight: bold; margin-left: 10px;">Hasta:</label>
+		<input type="date" th:field="*{fechaHasta}" />
+
+		<br /><br />
+
+		<button type="submit" name="action" value="Buscar" style="padding: 5px 10px; font-weight: bold;">Buscar</button>
+		<button type="submit" name="action" value="Registrar" style="padding: 5px 10px;">Nueva Factura</button>
+		<button type="submit" name="action" value="Cancelar" style="padding: 5px 10px; color: red;">Cancelar</button>
+	</form>
+
+	<br />
+
+	<table border="1" cellpadding="6" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+		<thead>
+			<tr style="background-color: #f2f2f2; text-align: left;">
+				<th>ID</th>
+				<th>Contrato ID</th>
+				<th>Propiedad</th>
+				<th>Inquilino</th>
+				<th>Concepto Facturado</th>
+				<th>Fecha Emisión</th>
+				<th>Fecha Vencimiento</th>
+				<th>Importe Total</th>
+				<th>Estado</th>
+				<th>Acciones</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="factura : ${facturas}">
+				<td th:text="${factura.id}"></td>
+				<td th:text="${factura.contrato != null} ? ${factura.contrato.id} : 'Sin Contrato'"></td>
+				<td
+					th:text="${factura.contrato != null and factura.contrato.propiedad != null} ? ${factura.contrato.propiedad.direccion} : 'Sin Propiedad'">
+				</td>
+				<td
+					th:text="${factura.contrato != null and factura.contrato.inquilino != null} ? ${factura.contrato.inquilino.nombre + ' ' + factura.contrato.inquilino.apellido} : 'Sin Inquilino'">
+				</td>
+				<td th:text="${factura.conceptoFacturado}"></td>
+				<td th:text="${factura.fechaEmision}"></td>
+				<td th:text="${factura.fechaVencimiento}"></td>
+				<td th:text="'$' + ${factura.importe}"></td>
+				<td th:text="${factura.estado}" style="font-weight: bold;"></td>
+				<td>
+					<a th:href="@{/facturas/editar/{id}(id=${factura.id})}"
+						style="color: blue; text-decoration: none; font-weight: bold;">Editar</a>
+					<span style="color: gray;"> | </span>
+					<a th:href="@{/facturas/eliminar(id=${factura.id})}"
+						onclick="return confirm('¿Está seguro de que desea eliminar/anular esta factura?');"
+						style="color: red; text-decoration: none; font-weight: bold;">Eliminar</a>
+				</td>
+			</tr>
+			<tr th:if="${#lists.isEmpty(facturas)}">
+				<td colspan="10" style="text-align: center; color: gray; padding: 15px; font-style: italic;">No se
+					encontraron facturas activas en el sistema.</td>
+			</tr>
+		</tbody>
+	</table>
+
+</body>
+
+</html>

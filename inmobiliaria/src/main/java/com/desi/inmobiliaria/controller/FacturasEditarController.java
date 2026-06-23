@@ -93,7 +93,7 @@ public class FacturasEditarController {
 
 	// Método auxiliar para no repetir código de los combos/desplegables
 	private void cargarAtributosFormulario(Model model) {
-		model.addAttribute("contratos", contratoService.listarTodos()); // Trae los contratos de tu compañero
+		model.addAttribute("contratos", contratoService.listarConFiltros(null, null, null, null));
 		model.addAttribute("estados", EstadoFactura.values());
 		model.addAttribute("mediosPago", MedioPago.values());
 	}

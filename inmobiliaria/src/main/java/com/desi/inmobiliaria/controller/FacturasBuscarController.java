@@ -93,14 +93,14 @@ public class FacturasBuscarController {
 	}
 
 	private void cargarCombosFiltro(Model modelo) {
-		modelo.addAttribute("contratos", contratoService.listarTodos());
-		modelo.addAttribute("propiedades", propiedadService.listarTodas());
-		modelo.addAttribute("inquilinos", personaService.listarTodas());
+	    modelo.addAttribute("contratos", contratoService.listarConFiltros(null, null, null, null));
+	    modelo.addAttribute("propiedades", propiedadService.listarTodas());
+	    modelo.addAttribute("inquilinos", personaService.listarTodas());
 	}
 
 	private void cargarCombosFiltro(ModelMap modelo) {
-		modelo.addAttribute("contratos", contratoService.listarTodos());
-		modelo.addAttribute("propiedades", propiedadService.listarTodas());
-		modelo.addAttribute("inquilinos", personaService.listarTodas());
+	    modelo.addAttribute("contratos", contratoService.listarConFiltros(null, null, null, null));
+	    modelo.addAttribute("propiedades", propiedadService.listarTodas());
+	    modelo.addAttribute("inquilinos", personaService.listarTodas());
 	}
 }
