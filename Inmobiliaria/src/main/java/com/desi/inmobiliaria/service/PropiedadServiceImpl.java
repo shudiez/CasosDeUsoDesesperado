@@ -151,4 +151,12 @@ public class PropiedadServiceImpl implements PropiedadService {
 	public List<Propiedad> buscarPorEstado(EstadoDisponibilidad estado) {
 		return propiedadRepository.findByEstadoDisponibilidadAndEliminadaFalse(estado);
 	}
+
+	// METODO BUSCAR PROPIEDADES CON FILTROS
+	@Override
+	public List<Propiedad> buscarConFiltros(String direccion, Long ciudadId, TipoPropiedad tipo,
+			EstadoDisponibilidad estado) {
+
+		return propiedadRepository.buscarConFiltros(direccion, ciudadId, tipo, estado);
+	}
 }

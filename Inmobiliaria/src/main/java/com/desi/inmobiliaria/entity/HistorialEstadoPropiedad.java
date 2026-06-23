@@ -27,7 +27,7 @@ public class HistorialEstadoPropiedad {
 	private LocalDateTime fechaHora;
 
 	// Una propiedad puede tener muchos cambios de estado a lo largo del tiempo
-	@ManyToOne
+	@ManyToOne (optional = false)
 	private Propiedad propiedad;
 
 	// constructor vacio

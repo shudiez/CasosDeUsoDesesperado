@@ -218,26 +218,9 @@ public class PropiedadController {
 			@RequestParam(required = false) Long ciudadId, @RequestParam(required = false) TipoPropiedad tipo,
 			@RequestParam(required = false) EstadoDisponibilidad estado, Model model) {
 
-		// Si el usuario ingreso una direccion, busco por direccion
-		if (direccion != null && !direccion.isBlank()) {
-			model.addAttribute("propiedades", propiedadService.buscarPorDireccion(direccion));
-
-			// Si selecciono una ciudad, busco por ciudad
-		} else if (ciudadId != null) {
-			model.addAttribute("propiedades", propiedadService.buscarPorCiudad(ciudadId));
-
-			// Si selecciono un tipo de propiedad, busco por tipo
-		} else if (tipo != null) {
-			model.addAttribute("propiedades", propiedadService.buscarPorTipo(tipo));
-
-			// Si selecciono un estado, busco por estado
-		} else if (estado != null) {
-			model.addAttribute("propiedades", propiedadService.buscarPorEstado(estado));
-
-			// Si no puso ningun filtro, muestro todas las propiedades
-		} else {
-			model.addAttribute("propiedades", propiedadService.listarTodas());
-		}
+		// Busca propiedades aplicando los filtros seleccionados.
+		// Los filtros que vengan vacíos serán ignorados.
+		model.addAttribute("propiedades", propiedadService.buscarConFiltros(direccion, ciudadId, tipo, estado));
 
 		// Cargo nuevamente las ciudades para el filtro
 		model.addAttribute("ciudades", ciudadService.listarTodas());

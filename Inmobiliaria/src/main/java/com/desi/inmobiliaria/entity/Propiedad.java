@@ -7,16 +7,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
-//Guarda toda la información de una propiedad
+@Table(name = "propiedad")
+//Guarda toda la informacion de una propiedad
 public class Propiedad {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	// ID generado automáticamente por la base de datos
+	// ID generado automaticamente por la base de datos
 	private Long id;
 
 	@Size(min = 1, max = 200, message = "La dirección es obligatoria")

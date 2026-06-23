@@ -33,4 +33,8 @@ public interface PropiedadService {
 
 	// METODO BUSCAR PROPIEDAD POR ESTADO
 	List<Propiedad> buscarPorEstado(EstadoDisponibilidad estado);
+
+	// Busca propiedades aplicando varios filtros al mismo tiempo.
+	// Si algun filtro viene vacio, no se tiene en cuenta en la busqueda
+	List<Propiedad> buscarConFiltros(String direccion, Long ciudadId, TipoPropiedad tipo, EstadoDisponibilidad estado);
 }
