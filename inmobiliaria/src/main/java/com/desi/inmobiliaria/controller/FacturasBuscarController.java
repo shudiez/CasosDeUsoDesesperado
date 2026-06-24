@@ -17,6 +17,7 @@ import com.desi.inmobiliaria.service.ContratoService;
 import com.desi.inmobiliaria.service.PropiedadService;
 import com.desi.inmobiliaria.service.PersonaService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/facturas")
@@ -82,14 +83,14 @@ public class FacturasBuscarController {
 	}
 
 	@GetMapping("/eliminar")
-	public String eliminar(@RequestParam("id") Long id, ModelMap modelo) {
-		try {
-			facturaService.deleteById(id);
-			modelo.addAttribute("mensajeExito", "La factura ha sido eliminada correctamente.");
-		} catch (Exception e) {
-			modelo.addAttribute("error", e.getMessage());
-		}
-		return "redirect:/facturas";
+	public String eliminar(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+	    try {
+	        facturaService.deleteById(id);
+	        redirectAttributes.addFlashAttribute("mensajeExito", "La factura ha sido eliminada correctamente.");
+	    } catch (Exception e) {
+	        redirectAttributes.addFlashAttribute("error", e.getMessage());
+	    }
+	    return "redirect:/facturas";
 	}
 
 	private void cargarCombosFiltro(Model modelo) {
