@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.desi.inmobiliaria.entity.Factura;
+import com.desi.inmobiliaria.entity.EstadoContrato;
 import com.desi.inmobiliaria.entity.EstadoFactura;
 import com.desi.inmobiliaria.entity.MedioPago;
 import com.desi.inmobiliaria.controller.FacturaForm;
@@ -83,7 +84,7 @@ public class FacturasEditarController {
 
 	// Método auxiliar para no repetir código de los combos/desplegables
 	private void cargarAtributosFormulario(Model model) {
-		model.addAttribute("contratos", contratoService.listarConFiltros(null, null, null, null));
+		model.addAttribute("contratos", contratoService.listarConFiltros(null, null, EstadoContrato.ACTIVO, null));
 		model.addAttribute("estados", EstadoFactura.values());
 		model.addAttribute("mediosPago", MedioPago.values());
 	}

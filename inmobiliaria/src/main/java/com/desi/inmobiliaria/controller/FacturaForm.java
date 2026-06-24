@@ -32,7 +32,7 @@ public class FacturaForm {
 	@org.springframework.format.annotation.DateTimeFormat(pattern = "yyyy-MM-dd")
 	private java.time.LocalDate fechaEmision;
 
-	@NotNull(message = "La fecha de emisión es obligatoria.")
+	@NotNull(message = "La fecha de vencimiento es obligatoria.")
 	@org.springframework.format.annotation.DateTimeFormat(pattern = "yyyy-MM-dd")
 	private java.time.LocalDate fechaVencimiento;
 

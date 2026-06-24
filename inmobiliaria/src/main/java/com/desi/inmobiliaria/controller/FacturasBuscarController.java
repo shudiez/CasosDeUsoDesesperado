@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.desi.inmobiliaria.entity.Factura;
+import com.desi.inmobiliaria.entity.EstadoContrato;
 import com.desi.inmobiliaria.entity.EstadoFactura;
 import com.desi.inmobiliaria.service.FacturaService;
 import com.desi.inmobiliaria.service.ContratoService;
@@ -18,6 +19,8 @@ import com.desi.inmobiliaria.service.PropiedadService;
 import com.desi.inmobiliaria.service.PersonaService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+
 
 @Controller
 @RequestMapping("/facturas")
@@ -94,13 +97,13 @@ public class FacturasBuscarController {
 	}
 
 	private void cargarCombosFiltro(Model modelo) {
-	    modelo.addAttribute("contratos", contratoService.listarConFiltros(null, null, null, null));
+		modelo.addAttribute("contratos", contratoService.listarConFiltros(null, null, EstadoContrato.ACTIVO, null));
 	    modelo.addAttribute("propiedades", propiedadService.listarTodas());
 	    modelo.addAttribute("inquilinos", personaService.listarTodas());
 	}
 
 	private void cargarCombosFiltro(ModelMap modelo) {
-	    modelo.addAttribute("contratos", contratoService.listarConFiltros(null, null, null, null));
+		modelo.addAttribute("contratos", contratoService.listarConFiltros(null, null, EstadoContrato.ACTIVO, null));
 	    modelo.addAttribute("propiedades", propiedadService.listarTodas());
 	    modelo.addAttribute("inquilinos", personaService.listarTodas());
 	}
