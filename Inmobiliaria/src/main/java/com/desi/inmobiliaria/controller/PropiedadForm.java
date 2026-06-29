@@ -29,7 +29,9 @@ public class PropiedadForm {
 	@NotBlank(message = "La descripción es obligatoria")
 	private String descripcion;
 
+	@NotBlank(message = "Las comodidades son obligatorias")
 	private String comodidades;
+	
 
 	@NotNull(message = "Debe seleccionar una ciudad")
 	private Long ciudadId;
@@ -37,6 +39,7 @@ public class PropiedadForm {
 	@NotNull(message = "Debe seleccionar un propietario")
 	private Long propietarioId;
 
+	@NotNull(message = "Debe seleccionar un tipo de propiedad")
 	private TipoPropiedad tipo;
 
 	private EstadoDisponibilidad estadoDisponibilidad;
