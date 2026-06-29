@@ -10,6 +10,11 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.desi.entity.EstadoContrato;
+import com.desi.entity.HistorialEstadoContrato;
+import com.desi.entity.Persona;
+import com.desi.entity.Propiedad;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -48,10 +53,13 @@ public class Contrato {
 	
 	@NotNull(message = "La duración es obligatoria")
     @Positive(message = "La duración debe ser mayor a 0 meses")
+	@Max(value=36, message="La duración de los contratos tiene un maximo de 36 meses.")
 	private Integer duracionMeses;
+	
 	@NotNull(message = "El importe es obligatorio")
     @Positive(message = "El importe debe ser un número positivo") // <-- Evita negativos y cero
 	private BigDecimal importeMensual;
+	
 	@NotNull(message = "El día de vencimiento es obligatorio")
     @Min(value = 1, message = "El día mínimo es 1")
     @Max(value = 31, message = "El día máximo es 31")
@@ -112,3 +120,5 @@ public class Contrato {
     public List<HistorialEstadoContrato> getHistorialEstados() { return historialEstados; }
 }
 	
+	
+

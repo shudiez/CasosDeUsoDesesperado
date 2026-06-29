@@ -36,6 +36,18 @@
 				    </div>
 				</form>
 	
+				
+					<div th:if="${success != null}" class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+				        <span th:text="${success}"></span>
+				        <a th:href="@{/contratos}" class="btn-close"  aria-label="Close"></a>
+				    </div>
+
+				    <div th:if="${error != null}" class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+				        <span th:text="${error}"></span>
+				        <a th:href="@{/contratos}"  class="btn-close"  aria-label="Close"></a>
+				    </div>
+				
+				
     <table class="table table-striped table-bordered align-middle shadow-sm">
         <thead class="table-dark text-center">
             <tr>
@@ -99,6 +111,8 @@
     </table>
 	<a th:href="@{/}" class="btn btn-secondary mt-3">Inicio</a>
     <a th:href="@{/propiedades}" class="btn btn-secondary mt-3">Ir a Propiedades</a>
+
+
 </body>
 
 </html>

@@ -12,6 +12,7 @@ public interface ContratoService {
 
 	
 	List<Contrato> listarConFiltros(String propiedad, String inquilino, EstadoContrato estado,LocalDate fechaInicio);
+	
     
     void guardar(Contrato contrato);
     
@@ -19,6 +20,5 @@ public interface ContratoService {
     
     void eliminar(Long id);
     
-    void cambiarEstado(Long contratoId, EstadoContrato nuevoEstado);
-	
+ 
 }
