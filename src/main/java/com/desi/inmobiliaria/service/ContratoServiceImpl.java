@@ -184,70 +184,7 @@ public class ContratoServiceImpl implements ContratoService{
     }
     
 
-<<<<<<< HEAD
-=======
-        EstadoContrato estadoActual = contrato.getEstado();
-
-        // 2. Controlar que no intenten revivir un contrato
-        if ((estadoActual == EstadoContrato.FINALIZADO || estadoActual == EstadoContrato.RESCINDIDO) 
-                && nuevoEstado == EstadoContrato.ACTIVO) {
-            throw new IllegalArgumentException("¡Error! No se puede volver a ACTIVAR un contrato que ya está FINALIZADO o RESCINDIDO.");
-        }
-        
-        // ****++++  Controla que un contrato finalizado o rescindido no se pueda poner en borrador, Así evito que se pueda volver a ACTIVAR.
-        if ((estadoActual == EstadoContrato.FINALIZADO || estadoActual == EstadoContrato.RESCINDIDO) 
-                && nuevoEstado == EstadoContrato.BORRADOR) {
-            throw new IllegalArgumentException("¡Error! No se puede volver a BORRADOR un contrato que ya está FINALIZADO o RESCINDIDO.");
-        }
-        
-
-        // 3. Controlar el paso de Borrador a Activo
-        if (estadoActual == EstadoContrato.BORRADOR && nuevoEstado != EstadoContrato.ACTIVO) {
-            throw new IllegalArgumentException("Un contrato en BORRADOR solo puede pasar a estado ACTIVO.");
-        }
-        
-        // 4. Controlar las salidas desde Activo
-        if (estadoActual == EstadoContrato.ACTIVO 
-                && nuevoEstado != EstadoContrato.FINALIZADO 
-                && nuevoEstado != EstadoContrato.RESCINDIDO) {
-            throw new IllegalArgumentException("Un contrato ACTIVO solo puede pasar a FINALIZADO o RESCINDIDO.");
-        }
-        
-        Propiedad propiedad = contrato.getPropiedad();
-        
-        if (nuevoEstado == EstadoContrato.ACTIVO) {
-        /*if (nuevoEstado == EstadoContrato.ACTIVO && estadoActual != EstadoContrato.ACTIVO) {*/
-            // Buscamos si la propiedad ya tiene un contrato ACTIVO en la base de datos
-            List<Contrato> activos = contratoRepository.findByPropiedadIdAndEstado(contrato.getPropiedad().getId(), EstadoContrato.ACTIVO);
-            
-            // Si la lista no está vacía, significa que otra persona ya la tiene alquilada
-            if (!activos.isEmpty()) {
-                throw new IllegalArgumentException("¡Error! La propiedad ya cuenta con un contrato ACTIVO vigente.");
-            }
-            
-            if(propiedad != null) {
-            	propiedad.setEstadoDisponibilidad(EstadoDisponibilidad.ALQUILADA);
-            	propiedadRepository.save(propiedad);
-            }
-             
-        }
-         //  Lógica para pasar de de FINALIZADO O RESCINDIDO a propiedad DISPONIBLE.
-            if (nuevoEstado == EstadoContrato.FINALIZADO || nuevoEstado == EstadoContrato.RESCINDIDO) {
-                if (propiedad != null) {
-                    // REGLA: La propiedad vuelve a estar DISPONIBLE
-                    propiedad.setEstadoDisponibilidad(EstadoDisponibilidad.DISPONIBLE);
-                    propiedadRepository.save(propiedad);
-                }
-            }
-            
-       
-
-        // 5. Si no saltó ningún error, guardamos el nuevo estado en la BD
-        contrato.setEstado(nuevoEstado);
-        contratoRepository.save(contrato);
-        
-    }
->>>>>>> aa8ceaf638fa8874bf900fb4db114d0124cd0b45
 }
+	
 	
 
