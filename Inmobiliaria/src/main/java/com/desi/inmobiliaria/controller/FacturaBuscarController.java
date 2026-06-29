@@ -11,16 +11,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.desi.inmobiliaria.entity.Factura;
+import com.desi.inmobiliaria.entity.EstadoContrato;
 import com.desi.inmobiliaria.entity.EstadoFactura;
 import com.desi.inmobiliaria.service.FacturaService;
 import com.desi.inmobiliaria.service.ContratoService;
 import com.desi.inmobiliaria.service.PropiedadService;
 import com.desi.inmobiliaria.service.PersonaService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+
 
 @Controller
 @RequestMapping("/facturas")
-public class FacturaBuscarController {
+public class FacturasBuscarController {
 
 	@Autowired
 	private FacturaService facturaService;
@@ -40,7 +44,7 @@ public class FacturaBuscarController {
 		modelo.addAttribute("formBean", form);
 		modelo.addAttribute("facturas", facturaService.getAll());
 		cargarCombosFiltro(modelo);
-		return "listar";
+		return "factura-list";
 	}
 
 	@ModelAttribute("estados")
@@ -65,7 +69,7 @@ public class FacturaBuscarController {
 
 			cargarCombosFiltro(modelo);
 			modelo.addAttribute("formBean", formBean);
-			return "listar";
+			return "factura-list";
 		}
 
 		if (action.equals("Cancelar")) {
@@ -82,25 +86,25 @@ public class FacturaBuscarController {
 	}
 
 	@GetMapping("/eliminar")
-	public String eliminar(@RequestParam("id") Long id, ModelMap modelo) {
-		try {
-			facturaService.deleteById(id);
-			modelo.addAttribute("mensajeExito", "La factura ha sido eliminada correctamente.");
-		} catch (Exception e) {
-			modelo.addAttribute("error", e.getMessage());
-		}
-		return "redirect:/facturas";
+	public String eliminar(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+	    try {
+	        facturaService.deleteById(id);
+	        redirectAttributes.addFlashAttribute("mensajeExito", "La factura ha sido eliminada correctamente.");
+	    } catch (Exception e) {
+	        redirectAttributes.addFlashAttribute("error", e.getMessage());
+	    }
+	    return "redirect:/facturas";
 	}
 
 	private void cargarCombosFiltro(Model modelo) {
-		modelo.addAttribute("contratos", contratoService.listarTodos());
-		modelo.addAttribute("propiedades", propiedadService.listarTodas());
-		modelo.addAttribute("inquilinos", personaService.listarTodas());
+		modelo.addAttribute("contratos", contratoService.listarConFiltros(null, null, EstadoContrato.ACTIVO, null));
+	    modelo.addAttribute("propiedades", propiedadService.listarTodas());
+	    modelo.addAttribute("inquilinos", personaService.listarTodas());
 	}
 
 	private void cargarCombosFiltro(ModelMap modelo) {
-		modelo.addAttribute("contratos", contratoService.listarTodos());
-		modelo.addAttribute("propiedades", propiedadService.listarTodas());
-		modelo.addAttribute("inquilinos", personaService.listarTodas());
+		modelo.addAttribute("contratos", contratoService.listarConFiltros(null, null, EstadoContrato.ACTIVO, null));
+	    modelo.addAttribute("propiedades", propiedadService.listarTodas());
+	    modelo.addAttribute("inquilinos", personaService.listarTodas());
 	}
 }
