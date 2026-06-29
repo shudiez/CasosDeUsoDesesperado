@@ -1,121 +1,224 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
-	<meta charset="UTF-8">
-	<title>Lista de Propiedades</title>
+<meta charset="UTF-8">
+<title>Lista de Propiedades</title>
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 </head>
 
-<body>
+<body class="bg-light">
 
-	<h1>Lista de Propiedades</h1>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold" th:href="@{/}">
+            <i class="bi bi-building-gear me-2"></i>
+            Casos de uso desesperado
+        </a>
+        <span class="navbar-text text-white-50">
+            Gestión de Propiedades
+        </span>
+    </div>
+</nav>
 
-	<a href="/propiedad/nueva">Nueva Propiedad</a>
+<div class="container my-5">
 
-	<br><br>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary mb-0">
+            <i class="bi bi-house-door-fill"></i>
+            Lista de Propiedades
+        </h2>
 
-	<h3>Filtrar propiedades</h3>
+        <div>
+            <a th:href="@{/}" class="btn btn-outline-secondary me-2">
+                <i class="bi bi-arrow-left-short"></i>
+                Volver al Inicio
+            </a>
+            <a th:href="@{/propiedad/nueva}" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i>
+                Nueva Propiedad
+            </a>
+        </div>
+    </div>
 
-	<form th:action="@{/propiedades/buscar}" method="get">
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <i class="bi bi-funnel-fill"></i>
+            Filtrar Propiedades
+        </div>
 
-		<label>Dirección:</label>
-		<input type="text" name="direccion">
+        <div class="card-body">
 
-		<br><br>
+            <form th:action="@{/propiedades/buscar}" method="get">
 
-		<label>Ciudad:</label>
-		<select name="ciudadId">
-			<option value="">Todas</option>
-			<option th:each="ciudad : ${ciudades}" th:value="${ciudad.id}" th:text="${ciudad.nombre}">
-			</option>
-		</select>
+                <div class="row">
 
-		<br><br>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Dirección</label>
+                        <input type="text" name="direccion" class="form-control">
+                    </div>
 
-		<label>Tipo:</label>
-		<select name="tipo">
-			<option value="">Todos</option>
-			<option th:each="tipo : ${tipos}" th:value="${tipo}" th:text="${tipo}">
-			</option>
-		</select>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Ciudad</label>
 
-		<br><br>
+                        <select name="ciudadId" class="form-select">
+                            <option value="">Todas</option>
 
-		<label>Estado:</label>
-		<select name="estado">
-			<option value="">Todos</option>
-			<option th:each="estado : ${estados}" th:value="${estado}" th:text="${estado}">
-			</option>
-		</select>
+                            <option
+                                th:each="ciudad : ${ciudades}"
+                                th:value="${ciudad.id}"
+                                th:text="${ciudad.nombre}">
+                            </option>
+                        </select>
+                    </div>
 
-		<br><br>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Tipo</label>
 
-		<button type="submit">Buscar</button>
+                        <select name="tipo" class="form-select">
 
-		<a href="/propiedades">Limpiar filtros</a>
+                            <option value="">Todos</option>
 
-	</form>
+                            <option
+                                th:each="tipo : ${tipos}"
+                                th:value="${tipo}"
+                                th:text="${tipo}">
+                            </option>
 
-	<br><br>
+                        </select>
+                    </div>
 
-	<br><br>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Estado</label>
 
-	<div th:if="${error}">
-		<h3 style="color:red" th:text="${error}"></h3>
-	</div>
+                        <select name="estado" class="form-select">
 
+                            <option value="">Todos</option>
 
-	<table border="1">
-		<tr>
-			<th>ID</th>
-			<th>Dirección</th>
-			<th>Ciudad</th>
-			<th>Provincia</th>
-			<th>Tipo de propiedad</th>
-			<th>Cantidad de Ambientes</th>
-			<th>Metros Cuadrados</th>
-			<th>Estado de disponibilidad</th>
-			<th>Propietario</th>
-			<th>Descripción</th>
-			<th>Acciones</th>
+                            <option
+                                th:each="estado : ${estados}"
+                                th:value="${estado}"
+                                th:text="${estado}">
+                            </option>
 
+                        </select>
+                    </div>
 
-		</tr>
+                </div>
 
-		<!-- RECORRIDO DE PROPIEDADES -->
-		<tr th:each="propiedad : ${propiedades}">
-			<td th:text="${propiedad.id}"></td>
-			<td th:text="${propiedad.direccion}"></td>
-			<td th:text="${propiedad.ciudad != null ? propiedad.ciudad.nombre : 'Sin ciudad'}"></td>
-			<td
-				th:text="${propiedad.ciudad != null && propiedad.ciudad.provincia != null ? propiedad.ciudad.provincia.nombre : 'Sin provincia'}">
-			</td>
-			<td th:text="${propiedad.tipo}"></td>
-			<td th:text="${propiedad.cantidadAmbientes}"></td>
-			<td th:text="${propiedad.metrosCuadrados}"></td>
-			<td th:text="${propiedad.estadoDisponibilidad}"></td>
-			<td
-				th:text="${propiedad.propietario != null ? propiedad.propietario.nombre + ' ' + propiedad.propietario.apellido : 'Sin propietario'}">
-			</td>
-			<td th:text="${propiedad.descripcion}"></td>
+                <button class="btn btn-primary" type="submit">
+                    <i class="bi bi-search"></i>
+                    Buscar
+                </button>
 
-			<!-- EDITAR -->
-			<td>
-				<a th:href="@{/propiedad/editar/{id}(id=${propiedad.id})}">
-					Editar
-				</a>
+                <a th:href="@{/propiedades}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-clockwise"></i>
+                    Limpiar filtros
+                </a>
 
-				<!-- ELIMINAR -->
-				<a th:href="@{/propiedad/eliminar/{id}(id=${propiedad.id})}"
-					onclick="return confirm('¿Está seguro de eliminar la propiedad?')">
-					Eliminar
-				</a>
-			</td>
+            </form>
 
-		</tr>
+        </div>
 
-	</table>
+    </div>
+
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <div class="card shadow">
+
+        <div class="card-header bg-success text-white">
+            Propiedades Registradas
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-striped table-hover align-middle">
+
+                    <thead class="table-dark">
+
+                    <tr>
+                        <th>ID</th>
+                        <th>Dirección</th>
+                        <th>Ciudad</th>
+                        <th>Provincia</th>
+                        <th>Tipo</th>
+                        <th>Ambientes</th>
+                        <th>M²</th>
+                        <th>Estado</th>
+                        <th>Propietario</th>
+                        <th>Descripción</th>
+                        <th>Acciones</th>
+                    </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="propiedad : ${propiedades}">
+
+                        <td th:text="${propiedad.id}"></td>
+
+                        <td th:text="${propiedad.direccion}"></td>
+
+                        <td th:text="${propiedad.ciudad != null ? propiedad.ciudad.nombre : 'Sin ciudad'}"></td>
+
+                        <td th:text="${propiedad.ciudad != null && propiedad.ciudad.provincia != null ? propiedad.ciudad.provincia.nombre : 'Sin provincia'}"></td>
+
+                        <td th:text="${propiedad.tipo}"></td>
+
+                        <td th:text="${propiedad.cantidadAmbientes}"></td>
+
+                        <td th:text="${propiedad.metrosCuadrados}"></td>
+
+                        <td>
+                            <span class="badge bg-info"
+                                  th:text="${propiedad.estadoDisponibilidad}">
+                            </span>
+                        </td>
+
+                        <td th:text="${propiedad.propietario != null ? propiedad.propietario.nombre + ' ' + propiedad.propietario.apellido : 'Sin propietario'}"></td>
+
+                        <td th:text="${propiedad.descripcion}"></td>
+
+                        <td>
+
+                            <a class="btn btn-warning btn-sm"
+                               th:href="@{/propiedad/editar/{id}(id=${propiedad.id})}">
+                                <i class="bi bi-pencil-square"></i>
+                                Editar
+                            </a>
+
+                            <a class="btn btn-danger btn-sm"
+                               th:href="@{/propiedad/eliminar/{id}(id=${propiedad.id})}"
+                               onclick="return confirm('¿Está seguro de eliminar la propiedad?')">
+                                <i class="bi bi-trash"></i>
+                                Eliminar
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<footer class="mt-5 py-3 bg-white border-top text-center text-muted">
+    © 2026 Casos de uso desesperado - Desarrollo de Software
+</footer>
 
 </body>
-
 </html>
