@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Publicaciones - Sistema Inmobiliario</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body class="bg-light text-dark d-flex flex-column min-vh-100">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="bi bi-building-gear me-2"></i> Casos de uso desesperado
+            </a>
+            <span class="navbar-text text-white-50 small">Gestión de Publicaciones</span>
+        </div>
+    </nav>
+
+    <main class="container my-5 flex-grow-1">
+
+        <div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i> <span th:text="${mensajeExito}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${mensajeError}" class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> <span th:text="${mensajeError}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="mb-4">
+            <h2 class="fw-bold text-dark m-0"><i class="bi bi-megaphone me-2"></i> Gestión de Publicaciones</h2>
+        </div>
+
+        <div class="bg-white p-4 mb-4 rounded-3 shadow-sm border">
+            <h4 class="border-bottom pb-2 mb-4 text-primary" 
+                th:text="${publicacion.id == null ? 'Nueva Publicación' : 'Modificar Publicación (ID: ' + publicacion.id + ')'}">
+            </h4>
+
+            <form th:action="@{${publicacion.id == null ? '/publicaciones/alta' : '/publicaciones/editar/' + publicacion.id}}" th:object="${publicacion}" method="post">
+                
+                <div class="row g-3">
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">Propiedad:</label>
+                        <select th:if="${publicacion.id == null}" name="propiedad.id" class="form-select" required>
+                            <option value="">-- Seleccione una propiedad --</option>
+                            <option th:each="prop : ${propiedadesDisponibles}" th:value="${prop.id}" th:text="${prop.direccion + ' (' + prop.tipo + ')'}"></option>
+                        </select>
+                        <div th:if="${publicacion.id != null}">
+                            <input type="text" class="form-control bg-light" th:value="${publicacion.propiedad.direccion + ' (' + publicacion.propiedad.tipo + ')'}" disabled>
+                            <input type="hidden" name="propiedad.id" th:value="${publicacion.propiedad.id}">
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Precio Mensual ($):</label>
+                        <input type="number" step="0.01" class="form-control" th:field="*{precioMensual}" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Fecha de Publicación:</label>
+                        <input type="date" class="form-control" th:field="*{fechaPublicacion}" required>
+                    </div>
+
+                    <div class="col-md-4" th:if="${publicacion.id != null}">
+                        <label class="form-label fw-bold">Estado:</label>
+                        <select th:field="*{estado}" class="form-select" required>
+                            <option value="ACTIVA">Activa</option>
+                            <option value="PAUSADA">Pausada</option>
+                            <option value="RESERVADA">Reservada</option> 
+                            <option value="FINALIZADA">Finalizada</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">Condiciones de alquiler:</label>
+                        <textarea th:field="*{condiciones}" class="form-control" rows="2" required></textarea>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label class="form-label fw-bold">Descripción:</label>
+                        <textarea th:field="*{descripcion}" class="form-control" rows="2" required></textarea>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-4 pt-3 border-top">
+                    <button type="submit" class="btn btn-primary fw-semibold">
+                        <i class="bi bi-floppy me-1"></i> <span th:text="${publicacion.id == null ? 'Publicar' : 'Guardar Cambios'}"></span>
+                    </button>
+                    <button th:if="${publicacion.id == null}" type="reset" class="btn btn-outline-secondary">Limpiar</button>
+                    <a th:if="${publicacion.id != null}" th:href="@{/publicaciones/alta}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="mb-4 text-center">
+            <button type="button" class="btn btn-secondary shadow-sm fw-bold px-4 py-2" onclick="toggleListado()">
+                <i class="bi bi-card-list me-2"></i> Mostrar / Ocultar Listado de Publicaciones
+            </button>
+        </div>
+
+        <div class="bg-white p-4 rounded-3 shadow-sm border" id="seccionListado" style="display: none;">
+            <h4 class="border-bottom pb-2 mb-4 text-info">Catálogo de Publicaciones</h4>
+            
+            <div class="row g-2 mb-4 align-items-end p-3 bg-light rounded border">
+                <div class="col-md-3">
+                    <label class="form-label small text-muted mb-1">Propiedad/Dirección</label>
+                    <input type="text" id="filtroPropiedad" class="form-control form-control-sm" placeholder="Buscar...">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small text-muted mb-1">Ciudad</label>
+                    <input type="text" id="filtroCiudad" class="form-control form-control-sm" placeholder="Buscar...">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small text-muted mb-1">Estado</label>
+                    <select id="filtroEstado" class="form-select form-select-sm">
+                        <option value="">Todos</option>
+                        <option value="ACTIVA">Activa</option>
+                        <option value="PAUSADA">Pausada</option>
+                        <option value="RESERVADA">Reservada</option>
+                        <option value="FINALIZADA">Finalizada</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small text-muted mb-1">Precio Min.</label>
+                    <input type="number" id="filtroPrecioMin" class="form-control form-control-sm" placeholder="0">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small text-muted mb-1">Precio Max.</label>
+                    <input type="number" id="filtroPrecioMax" class="form-control form-control-sm" placeholder="Sin límite">
+                </div>
+                <div class="col-md-1 d-grid">
+                    <button type="button" class="btn btn-info btn-sm text-white fw-bold" onclick="filtrarTabla()">
+                        <i class="bi bi-funnel-fill"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered align-middle text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Dirección de la propiedad</th>
+                            <th>Ciudad</th>
+                            <th>Precio mensual</th>
+                            <th>Fecha pub.</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaPublicaciones">
+                        <tr th:if="${#lists.isEmpty(listaPublicaciones)}">
+                            <td colspan="7" class="text-muted py-4">No hay publicaciones registradas actualmente.</td>
+                        </tr>
+                        <tr th:each="pub : ${listaPublicaciones}">
+                            <td class="fw-bold" th:text="${pub.id}"></td>
+                            <td class="text-start" th:text="${pub.propiedad.direccion}"></td>
+                            <td>-</td> 
+                            <td class="text-success fw-semibold" th:text="'$ ' + ${pub.precioMensual}"></td>
+                            <td th:text="${pub.fechaPublicacion}"></td>
+                            <td>
+                                <span class="badge" 
+                                      th:classappend="${pub.estado.name() == 'ACTIVA' ? 'bg-success' : (pub.estado.name() == 'PAUSADA' ? 'bg-warning text-dark' : (pub.estado.name() == 'RESERVADA' ? 'bg-info text-dark' : 'bg-secondary'))}"
+                                      th:text="${pub.estado}"></span>
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-center gap-1">
+                                    <a th:href="@{/publicaciones/editar/{id}(id=${pub.id})}" class="btn btn-outline-primary btn-sm" title="Modificar">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <form th:action="@{/publicaciones/eliminar/{id}(id=${pub.id})}" method="post" class="m-0">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm" title="Eliminar" onclick="return confirm('¿Confirmar baja/eliminación de esta publicación?');">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footer mt-auto py-3 bg-white border-top text-center text-muted small">
+        <div class="container">
+            <span>© 2026 Casos de uso desesperado - Trabajo practico DESI.</span>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function toggleListado() {
+            var seccion = document.getElementById("seccionListado");
+            if (seccion.style.display === "none") {
+                seccion.style.display = "block";
+            } else {
+                seccion.style.display = "none";
+            }
+        }
+
+        function filtrarTabla() {
+            var propInput = document.getElementById("filtroPropiedad").value.toLowerCase();
+            var ciudadInput = document.getElementById("filtroCiudad").value.toLowerCase();
+            var estadoInput = document.getElementById("filtroEstado").value.toUpperCase();
+            var minInput = parseFloat(document.getElementById("filtroPrecioMin").value);
+            var maxInput = parseFloat(document.getElementById("filtroPrecioMax").value);
+
+            var tabla = document.getElementById("tablaPublicaciones");
+            var filas = tabla.getElementsByTagName("tr");
+
+            for (var i = 0; i < filas.length; i++) {
+                if (filas[i].getElementsByTagName("td").length < 7) continue;
+
+                var direccion = filas[i].getElementsByTagName("td")[1].textContent.toLowerCase();
+                var ciudad = filas[i].getElementsByTagName("td")[2].textContent.toLowerCase();
+                var precioTexto = filas[i].getElementsByTagName("td")[3].textContent.replace('$', '').trim();
+                var precio = parseFloat(precioTexto);
+                var estado = filas[i].getElementsByTagName("td")[5].textContent.trim().toUpperCase();
+
+                var mostrar = true;
+
+                if (propInput && !direccion.includes(propInput)) mostrar = false;
+                if (ciudadInput && !ciudad.includes(ciudadInput)) mostrar = false;
+                if (estadoInput && estado !== estadoInput) mostrar = false;
+                if (!isNaN(minInput) && precio < minInput) mostrar = false;
+                if (!isNaN(maxInput) && precio > maxInput) mostrar = false;
+
+                if (mostrar) {
+                    filas[i].style.display = "";
+                } else {
+                    filas[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
