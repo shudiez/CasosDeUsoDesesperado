@@ -1,11 +1,11 @@
-package com.desi.inmobiliria.service;
+package com.desi.inmobiliaria.service;
 
 
 import java.time.LocalDate;
 import java.util.List;
 
-import com.desi.entity.Contrato;
-import com.desi.entity.EstadoContrato;
+import com.desi.inmobiliaria.entity.Contrato;
+import com.desi.inmobiliaria.entity.EstadoContrato;
 
 
 public interface ContratoService {
