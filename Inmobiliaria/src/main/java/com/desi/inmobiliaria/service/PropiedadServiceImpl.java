@@ -43,6 +43,11 @@ public class PropiedadServiceImpl implements PropiedadService {
 			throw new Excepcion("La descripción es obligatoria");
 		}
 
+		// Comodidades obligatorias
+		if (propiedad.getComodidades() == null || propiedad.getComodidades().isBlank()) {
+			throw new Excepcion("Las comodidades son obligatorias");
+		}
+		
 		// Ambientes mayores a 0
 		if (propiedad.getCantidadAmbientes() == null || propiedad.getCantidadAmbientes() <= 0) {
 			throw new Excepcion("La cantidad de ambientes debe ser mayor a cero");
