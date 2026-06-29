@@ -21,7 +21,8 @@ public interface ContratoRepository extends JpaRepository <Contrato, Long>  {
 	           "(:direccion IS NULL OR c.propiedad.direccion LIKE %:direccion%) AND " +
 	           "(:inquilino IS NULL OR c.inquilino.apellido LIKE %:inquilino% OR c.inquilino.nombre LIKE %:inquilino%) AND " +
 	           "(:estado IS NULL OR c.estado = :estado) AND " +
-	           "(:fechaInicio IS NULL OR c.fechaInicio = :fechaInicio)")
+	           "(:fechaInicio IS NULL OR c.fechaInicio = :fechaInicio)"+
+	           "ORDER BY c.ID ASC"")
 	List<Contrato> filtrarContratos(
 			@Param("direccion") String direccion,
 			@Param("inquilino") String inquilino,
