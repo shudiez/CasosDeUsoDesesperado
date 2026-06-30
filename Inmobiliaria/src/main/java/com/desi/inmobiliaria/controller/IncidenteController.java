@@ -1,63 +1,82 @@
-package com.desi.inmobiliaria.controller;
-
-import com.desi.inmobiliaria.entity.CategoriaIncidente;
-import com.desi.inmobiliaria.entity.EstadoIncidente;
-import com.desi.inmobiliaria.entity.Incidente;
-import com.desi.inmobiliaria.entity.PrioridadIncidente;
-import com.desi.inmobiliaria.service.IncidenteService;
-import com.desi.inmobiliaria.service.PropiedadService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-
 @Controller
 public class IncidenteController {
+
+   // Servicio que se encarga de los incidentes
    @Autowired
    private IncidenteService incidenteService;
+
+   // Lo uso para traer las propiedades
    @Autowired
    private PropiedadService propiedadService;
 
    public IncidenteController() {
    }
 
-   @GetMapping({"/incidente/nuevo"})
+   // Abre el formulario para cargar un incidente nuevo
+   @GetMapping("/incidente/nuevo")
    public String nuevoIncidente(Model model) {
+
+      // Creo un incidente vacío
       model.addAttribute("incidente", new Incidente());
+
+      // Cargo los datos de los combos del formulario
       model.addAttribute("categorias", CategoriaIncidente.values());
       model.addAttribute("prioridades", PrioridadIncidente.values());
       model.addAttribute("estados", EstadoIncidente.values());
-      model.addAttribute("propiedades", this.propiedadService.listarTodas());
+
+      // Cargo las propiedades para poder elegir una
+      model.addAttribute("propiedades", propiedadService.listarTodas());
+
       return "incidente-form";
    }
 
-   @PostMapping({"/incidentes"})
+   // Guarda el incidente
+   @PostMapping("/incidentes")
    public String guardar(Incidente incidente) {
-      this.incidenteService.guardar(incidente);
+
+      // Lo mando al service para guardarlo
+      incidenteService.guardar(incidente);
+
+      // Cuando termina vuelvo al listado
       return "redirect:/incidentes";
    }
 
-   @GetMapping({"/incidentes"})
+   // Muestra todos los incidentes
+   @GetMapping("/incidentes")
    public String listar(Model model) {
-      model.addAttribute("incidentes", this.incidenteService.listarTodos());
+
+      // Traigo todos los incidentes y los envío a la vista
+      model.addAttribute("incidentes", incidenteService.listarTodos());
+
       return "incidente-list";
    }
 
-   @GetMapping({"/incidente/editar/{id}"})
+   // Busca un incidente para poder editarlo
+   @GetMapping("/incidente/editar/{id}")
    public String editar(@PathVariable Long id, Model model) {
-      model.addAttribute("incidente", this.incidenteService.buscarPorId(id));
+
+      // Busco el incidente por su id
+      model.addAttribute("incidente", incidenteService.buscarPorId(id));
+
+      // Cargo nuevamente los datos de los combos
       model.addAttribute("categorias", CategoriaIncidente.values());
       model.addAttribute("prioridades", PrioridadIncidente.values());
       model.addAttribute("estados", EstadoIncidente.values());
-      model.addAttribute("propiedades", this.propiedadService.listarTodas());
+
+      // Cargo las propiedades
+      model.addAttribute("propiedades", propiedadService.listarTodas());
+
       return "incidente-form";
    }
 
-   @GetMapping({"/incidente/eliminar/{id}"})
+   // Elimina un incidente
+   @GetMapping("/incidente/eliminar/{id}")
    public String eliminar(@PathVariable Long id) {
-      this.incidenteService.eliminar(id);
+
+      // Lo elimino usando el id
+      incidenteService.eliminar(id);
+
+      // Después vuelvo al listado
       return "redirect:/incidentes";
    }
 }
