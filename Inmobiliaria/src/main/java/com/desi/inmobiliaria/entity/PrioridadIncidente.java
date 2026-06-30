@@ -4,7 +4,4 @@ public enum PrioridadIncidente {
    BAJA,
    MEDIA,
    ALTA;
-
-   private PrioridadIncidente() {
-   }
 }
