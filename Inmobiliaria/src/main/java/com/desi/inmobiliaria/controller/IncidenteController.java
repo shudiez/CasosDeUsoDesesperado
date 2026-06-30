@@ -1,3 +1,18 @@
+package com.desi.inmobiliaria.controller; 
+
+import com.desi.inmobiliaria.entity.CategoriaIncidente; 
+import com.desi.inmobiliaria.entity.EstadoIncidente; 
+import com.desi.inmobiliaria.entity.Incidente; 
+import com.desi.inmobiliaria.entity.PrioridadIncidente; 
+import com.desi.inmobiliaria.service.IncidenteService; 
+import com.desi.inmobiliaria.service.PropiedadService; 
+import org.springframework.beans.factory.annotation.Autowired; 
+import org.springframework.stereotype.Controller; 
+import org.springframework.ui.Model; 
+import org.springframework.web.bind.annotation.GetMapping; 
+import org.springframework.web.bind.annotation.PathVariable; 
+import org.springframework.web.bind.annotation.PostMapping;
+
 @Controller
 public class IncidenteController {
 
