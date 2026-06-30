@@ -2,23 +2,19 @@ package com.desi.inmobiliaria.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.desi.inmobiliaria.entity.Ciudad;
-import com.desi.inmobiliaria.repository.CiudadRepository;
 
 public interface CiudadService {
 
-	// MEOTOD LISTAR CIUDAD
+	// Devuelve todas las ciudades
 	List<Ciudad> listarTodas();
 
-	// METODO BUSCAR CIUDAD
+	// Busca una ciudad por su id
 	Ciudad buscarPorId(Long id);
 
-	// METODO GUARDAR CIUDAD
+	// Guarda una ciudad nueva o editada
 	Ciudad guardar(Ciudad ciudad);
 
-	// METODO ELIMIANR CIUDAD
+	// Elimina una ciudad
 	void eliminar(Long id);
 }
