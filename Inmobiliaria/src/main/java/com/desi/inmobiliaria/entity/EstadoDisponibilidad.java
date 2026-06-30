@@ -6,6 +6,4 @@ public enum EstadoDisponibilidad {
    ALQUILADA,
    INACTIVA;
 
-   private EstadoDisponibilidad() {
-   }
 }
