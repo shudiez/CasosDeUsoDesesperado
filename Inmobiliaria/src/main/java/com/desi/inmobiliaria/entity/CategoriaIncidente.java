@@ -5,7 +5,4 @@ public enum CategoriaIncidente {
    ELECTRICIDAD,
    GAS,
    GENERAL;
-
-   private CategoriaIncidente() {
-   }
 }
