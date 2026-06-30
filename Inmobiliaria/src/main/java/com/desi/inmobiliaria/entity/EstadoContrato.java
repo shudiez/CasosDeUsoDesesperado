@@ -6,6 +6,5 @@ public enum EstadoContrato {
    FINALIZADO,
    RESCINDIDO;
 
-   private EstadoContrato() {
-   }
+  
 }
