@@ -10,44 +10,49 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public class PropiedadForm {
+
+   // Datos que completa el usuario en el formulario
    private Long id;
-   private @NotBlank(
-   message = "La dirección es obligatoria"
-) String direccion;
-   private @NotNull(
-   message = "La cantidad de ambientes es obligatoria"
-) @Positive(
-   message = "La cantidad de ambientes debe ser mayor a cero"
-) Integer cantidadAmbientes;
-   private @NotNull(
-   message = "Los metros cuadrados son obligatorios"
-) @Positive(
-   message = "Los metros cuadrados deben ser mayores a cero"
-) Double metrosCuadrados;
-   private @NotBlank(
-   message = "La descripción es obligatoria"
-) String descripcion;
-   private @NotBlank(
-   message = "Las comodidades son obligatorias"
-) String comodidades;
-   private @NotNull(
-   message = "Debe seleccionar una ciudad"
-) Long ciudadId;
-   private @NotNull(
-   message = "Debe seleccionar una provincia"
-) Long provinciaId;
-   private @NotNull(
-   message = "Debe seleccionar un propietario"
-) Long propietarioId;
-   private @NotNull(
-   message = "Debe seleccionar un tipo de propiedad"
-) TipoPropiedad tipo;
+
+   @NotBlank(message = "La dirección es obligatoria")
+   private String direccion;
+
+   @NotNull(message = "La cantidad de ambientes es obligatoria")
+   @Positive(message = "La cantidad de ambientes debe ser mayor a cero")
+   private Integer cantidadAmbientes;
+
+   @NotNull(message = "Los metros cuadrados son obligatorios")
+   @Positive(message = "Los metros cuadrados deben ser mayores a cero")
+   private Double metrosCuadrados;
+
+   @NotBlank(message = "La descripción es obligatoria")
+   private String descripcion;
+
+   @NotBlank(message = "Las comodidades son obligatorias")
+   private String comodidades;
+
+   @NotNull(message = "Debe seleccionar una ciudad")
+   private Long ciudadId;
+
+   @NotNull(message = "Debe seleccionar una provincia")
+   private Long provinciaId;
+
+   @NotNull(message = "Debe seleccionar un propietario")
+   private Long propietarioId;
+
+   @NotNull(message = "Debe seleccionar un tipo de propiedad")
+   private TipoPropiedad tipo;
+
    private EstadoDisponibilidad estadoDisponibilidad;
 
+   // Constructor vacío
    public PropiedadForm() {
    }
 
+   // Copio los datos de una Propiedad al formulario
+   // Lo uso cuando quiero editar una propiedad
    public PropiedadForm(Propiedad p) {
+
       this.id = p.getId();
       this.direccion = p.getDireccion();
       this.cantidadAmbientes = p.getCantidadAmbientes();
@@ -56,18 +61,24 @@ public class PropiedadForm {
       this.comodidades = p.getComodidades();
       this.tipo = p.getTipo();
       this.estadoDisponibilidad = p.getEstadoDisponibilidad();
+
+      // Guardo el id de la ciudad
       if (p.getCiudad() != null) {
          this.ciudadId = p.getCiudad().getId();
       }
 
+      // Guardo el id del propietario
       if (p.getPropietario() != null) {
          this.propietarioId = p.getPropietario().getId();
       }
-
    }
 
+   // Convierte una Propiedad en un PropiedadForm
+   // Así puedo mostrar los datos en el formulario
    public static PropiedadForm fromPojo(Propiedad p) {
+
       PropiedadForm form = new PropiedadForm();
+
       form.setId(p.getId());
       form.setDireccion(p.getDireccion());
       form.setCantidadAmbientes(p.getCantidadAmbientes());
@@ -76,6 +87,7 @@ public class PropiedadForm {
       form.setComodidades(p.getComodidades());
       form.setTipo(p.getTipo());
       form.setEstadoDisponibilidad(p.getEstadoDisponibilidad());
+
       if (p.getCiudad() != null) {
          form.setCiudadId(p.getCiudad().getId());
       }
@@ -87,8 +99,12 @@ public class PropiedadForm {
       return form;
    }
 
+   // Convierte los datos del formulario en una Propiedad
+   // Después este objeto se manda al service para guardarlo
    public Propiedad toPojo() {
+
       Propiedad p = new Propiedad();
+
       p.setId(this.id);
       p.setDireccion(this.direccion);
       p.setCantidadAmbientes(this.cantidadAmbientes);
@@ -97,12 +113,15 @@ public class PropiedadForm {
       p.setComodidades(this.comodidades);
       p.setTipo(this.tipo);
       p.setEstadoDisponibilidad(this.estadoDisponibilidad);
+
+      // Si se eligió una ciudad, la asigno a la propiedad
       if (this.ciudadId != null) {
          Ciudad ciudad = new Ciudad();
          ciudad.setId(this.ciudadId);
          p.setCiudad(ciudad);
       }
 
+      // Si se eligió un propietario, lo asigno a la propiedad
       if (this.propietarioId != null) {
          Persona propietario = new Persona();
          propietario.setId(this.propietarioId);
@@ -112,6 +131,7 @@ public class PropiedadForm {
       return p;
    }
 
+   // Devuelve el id
    public Long getId() {
       return this.id;
    }
@@ -120,6 +140,7 @@ public class PropiedadForm {
       this.id = id;
    }
 
+   // Devuelve la dirección
    public String getDireccion() {
       return this.direccion;
    }
@@ -128,6 +149,7 @@ public class PropiedadForm {
       this.direccion = direccion;
    }
 
+   // Devuelve la cantidad de ambientes
    public Integer getCantidadAmbientes() {
       return this.cantidadAmbientes;
    }
@@ -136,6 +158,7 @@ public class PropiedadForm {
       this.cantidadAmbientes = cantidadAmbientes;
    }
 
+   // Devuelve los metros cuadrados
    public Double getMetrosCuadrados() {
       return this.metrosCuadrados;
    }
@@ -144,6 +167,7 @@ public class PropiedadForm {
       this.metrosCuadrados = metrosCuadrados;
    }
 
+   // Devuelve la descripción
    public String getDescripcion() {
       return this.descripcion;
    }
@@ -152,6 +176,7 @@ public class PropiedadForm {
       this.descripcion = descripcion;
    }
 
+   // Devuelve las comodidades
    public String getComodidades() {
       return this.comodidades;
    }
@@ -160,6 +185,7 @@ public class PropiedadForm {
       this.comodidades = comodidades;
    }
 
+   // Devuelve el id de la ciudad
    public Long getCiudadId() {
       return this.ciudadId;
    }
@@ -168,6 +194,7 @@ public class PropiedadForm {
       this.ciudadId = ciudadId;
    }
 
+   // Devuelve el id del propietario
    public Long getPropietarioId() {
       return this.propietarioId;
    }
@@ -176,6 +203,7 @@ public class PropiedadForm {
       this.propietarioId = propietarioId;
    }
 
+   // Devuelve el tipo de propiedad
    public TipoPropiedad getTipo() {
       return this.tipo;
    }
@@ -184,6 +212,7 @@ public class PropiedadForm {
       this.tipo = tipo;
    }
 
+   // Devuelve el estado de la propiedad
    public EstadoDisponibilidad getEstadoDisponibilidad() {
       return this.estadoDisponibilidad;
    }
@@ -192,6 +221,7 @@ public class PropiedadForm {
       this.estadoDisponibilidad = estadoDisponibilidad;
    }
 
+   // Devuelve el id de la provincia
    public Long getProvinciaId() {
       return this.provinciaId;
    }
