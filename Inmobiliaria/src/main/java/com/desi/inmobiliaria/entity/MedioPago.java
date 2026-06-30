@@ -5,7 +5,4 @@ public enum MedioPago {
    EFECTIVO,
    DEBITO,
    CREDITO;
-
-   private MedioPago() {
-   }
 }
