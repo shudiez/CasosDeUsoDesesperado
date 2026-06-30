@@ -5,6 +5,4 @@ public enum EstadoVisita {
    REALIZADA,
    CANCELADA;
 
-   private EstadoVisita() {
-   }
 }
