@@ -3,33 +3,43 @@
 
 <head>
     <meta charset="UTF-8">
+
+    <!-- Título de la pestaña -->
     <title>Nuevo Incidente</title>
 
+    <!-- Bootstrap para los estilos -->
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 
+    <!-- Iconos de Bootstrap -->
     <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 </head>
 
 <body class="bg-light">
 
+    <!-- Barra superior -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
         <div class="container">
+
             <a class="navbar-brand fw-bold" th:href="@{/}">
                 <i class="bi bi-building-gear me-2"></i>
                 Casos de uso desesperado
             </a>
+
             <span class="navbar-text text-white-50">
                 Gestión de Incidentes
             </span>
+
         </div>
     </nav>
 
     <div class="container mt-5">
 
+        <!-- Tarjeta que contiene el formulario -->
         <div class="card shadow" style="max-width: 850px; margin: 0 auto;">
 
+            <!-- Título del formulario -->
             <div class="card-header bg-dark text-white">
                 <h3 class="mb-0 fs-5">
                     <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>
@@ -39,80 +49,191 @@
 
             <div class="card-body p-4">
 
-                <form th:action="@{/incidentes}" th:object="${incidente}" method="post">
+                <!-- Formulario para guardar un incidente -->
+                <form th:action="@{/incidentes}"
+                      th:object="${incidente}"
+                      method="post">
 
+                    <!-- Guarda el id cuando se está editando -->
                     <input type="hidden" th:field="*{id}">
 
                     <div class="row">
 
+                        <!-- Título del incidente -->
                         <div class="col-12 mb-3">
-                            <label class="form-label fw-bold">Título / Breve Resumen</label>
-                            <input type="text" class="form-control" th:field="*{titulo}" required placeholder="Ej: Filtración de agua en baño principal">
+
+                            <label class="form-label fw-bold">
+                                Título / Breve Resumen
+                            </label>
+
+                            <input type="text"
+                                   class="form-control"
+                                   th:field="*{titulo}"
+                                   required
+                                   placeholder="Ej: Filtración de agua en baño principal">
+
                         </div>
 
+                        <!-- Propiedad afectada -->
                         <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Propiedad Afectada</label>
+
+                            <label class="form-label fw-bold">
+                                Propiedad Afectada
+                            </label>
+
                             <div class="input-group">
-                                <select class="form-select" th:field="*{propiedad}">
-                                    <option value="">Seleccione...</option>
+
+                                <!-- Lista de propiedades -->
+                                <select class="form-select"
+                                        th:field="*{propiedad}">
+
+                                    <option value="">
+                                        Seleccione...
+                                    </option>
+
+                                    <!-- Carga automáticamente todas las propiedades -->
                                     <option th:each="propiedad : ${propiedades}"
                                             th:value="${propiedad.id}"
-                                            th:text="${propiedad.direccion}"></option>
+                                            th:text="${propiedad.direccion}">
+                                    </option>
+
                                 </select>
-                                <a th:href="@{/propiedad/nueva}" target="_blank" class="btn btn-outline-secondary" title="Agregar Propiedad">
+
+                                <!-- Permite crear una propiedad nueva -->
+                                <a th:href="@{/propiedad/nueva}"
+                                   target="_blank"
+                                   class="btn btn-outline-secondary"
+                                   title="Agregar Propiedad">
+
                                     <i class="bi bi-house-plus-fill text-success"></i> +
+
                                 </a>
+
                             </div>
+
                         </div>
 
+                        <!-- Categoría -->
                         <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Categoría</label>
-                            <select class="form-select" th:field="*{categoria}">
-                                <option value="">Seleccione...</option>
+
+                            <label class="form-label fw-bold">
+                                Categoría
+                            </label>
+
+                            <select class="form-select"
+                                    th:field="*{categoria}">
+
+                                <option value="">
+                                    Seleccione...
+                                </option>
+
+                                <!-- Carga todas las categorías -->
                                 <option th:each="categoria : ${categorias}"
                                         th:value="${categoria}"
-                                        th:text="${categoria}"></option>
+                                        th:text="${categoria}">
+                                </option>
+
                             </select>
+
                         </div>
 
+                        <!-- Prioridad -->
                         <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Prioridad</label>
-                            <select class="form-select" th:field="*{prioridad}">
-                                <option value="">Seleccione...</option>
+
+                            <label class="form-label fw-bold">
+                                Prioridad
+                            </label>
+
+                            <select class="form-select"
+                                    th:field="*{prioridad}">
+
+                                <option value="">
+                                    Seleccione...
+                                </option>
+
+                                <!-- Carga todas las prioridades -->
                                 <option th:each="prioridad : ${prioridades}"
                                         th:value="${prioridad}"
-                                        th:text="${prioridad}"></option>
+                                        th:text="${prioridad}">
+                                </option>
+
                             </select>
+
                         </div>
 
+                        <!-- Estado -->
                         <div class="col-md-6 mb-3">
-                            <label class="form-label fw-bold">Estado Actual</label>
-                            <select class="form-select" th:field="*{estado}">
+
+                            <label class="form-label fw-bold">
+                                Estado Actual
+                            </label>
+
+                            <select class="form-select"
+                                    th:field="*{estado}">
+
+                                <!-- Carga todos los estados -->
                                 <option th:each="estado : ${estados}"
                                         th:value="${estado}"
-                                        th:text="${estado}"></option>
+                                        th:text="${estado}">
+                                </option>
+
                             </select>
+
                         </div>
 
+                        <!-- Responsable -->
                         <div class="col-12 mb-3">
-                            <label class="form-label fw-bold">Responsable Técnico / Proveedor asignado</label>
-                            <input type="text" class="form-control" th:field="*{responsableTecnico}" placeholder="Ej: Juan Pérez (Plomero)">
+
+                            <label class="form-label fw-bold">
+                                Responsable Técnico / Proveedor asignado
+                            </label>
+
+                            <input type="text"
+                                   class="form-control"
+                                   th:field="*{responsableTecnico}"
+                                   placeholder="Ej: Juan Pérez (Plomero)">
+
                         </div>
 
+                        <!-- Descripción -->
                         <div class="col-12 mb-4">
-                            <label class="form-label fw-bold">Descripción detallada del problema</label>
-                            <textarea class="form-control" rows="4" th:field="*{descripcion}" required placeholder="Detalle el estado del incidente..."></textarea>
+
+                            <label class="form-label fw-bold">
+                                Descripción detallada del problema
+                            </label>
+
+                            <textarea class="form-control"
+                                      rows="4"
+                                      th:field="*{descripcion}"
+                                      required
+                                      placeholder="Detalle el estado del incidente...">
+                            </textarea>
+
                         </div>
 
                     </div>
 
+                    <!-- Botones -->
                     <div class="text-center border-top pt-3">
-                        <button type="submit" class="btn btn-success me-2">
-                            <i class="bi bi-check-circle me-1"></i> Guardar Incidente
+
+                        <!-- Guarda el incidente -->
+                        <button type="submit"
+                                class="btn btn-success me-2">
+
+                            <i class="bi bi-check-circle me-1"></i>
+                            Guardar Incidente
+
                         </button>
-                        <a th:href="@{/incidentes}" class="btn btn-secondary">
-                            <i class="bi bi-arrow-left-short"></i> Volver al listado
+
+                        <!-- Vuelve al listado -->
+                        <a th:href="@{/incidentes}"
+                           class="btn btn-secondary">
+
+                            <i class="bi bi-arrow-left-short"></i>
+                            Volver al listado
+
                         </a>
+
                     </div>
 
                 </form>
@@ -123,6 +244,7 @@
 
     </div>
 
+    <!-- Pie de página -->
     <footer class="mt-5 py-3 bg-white border-top text-center text-muted">
         © 2026 Casos de uso desesperado - Desarrollo de Software
     </footer>
