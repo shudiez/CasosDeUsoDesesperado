@@ -6,20 +6,26 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
-@Entity
+@Entity // Indica que esta clase se guarda en la base de datos
 public class Ciudad {
+
+   // Id único de la ciudad
    @Id
-   @GeneratedValue(
-      strategy = GenerationType.IDENTITY
-   )
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
+
+   // Nombre de la ciudad
    private String nombre;
+
+   // Cada ciudad pertenece a una provincia
    @ManyToOne
    private Provincia provincia;
 
+   // Constructor vacío
    public Ciudad() {
    }
 
+  
    public Long getId() {
       return this.id;
    }
@@ -31,7 +37,7 @@ public class Ciudad {
    public String getNombre() {
       return this.nombre;
    }
-
+   
    public void setNombre(String nombre) {
       this.nombre = nombre;
    }
@@ -39,7 +45,7 @@ public class Ciudad {
    public Provincia getProvincia() {
       return this.provincia;
    }
-
+   
    public void setProvincia(Provincia provincia) {
       this.provincia = provincia;
    }
