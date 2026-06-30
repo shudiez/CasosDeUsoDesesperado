@@ -5,7 +5,4 @@ public enum EstadoFactura {
    PAGADA,
    VENCIDA,
    ANULADA;
-
-   private EstadoFactura() {
-   }
 }
