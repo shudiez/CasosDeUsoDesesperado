@@ -6,6 +6,4 @@ public enum TipoPropiedad {
    LOCAL,
    OTRO;
 
-   private TipoPropiedad() {
-   }
 }
