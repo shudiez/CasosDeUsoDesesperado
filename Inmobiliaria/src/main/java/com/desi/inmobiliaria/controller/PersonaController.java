@@ -14,57 +14,100 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class PersonaController {
-   @Autowired
-   private PersonaService personaService;
 
-   public PersonaController() {
-   }
+	// Servicio que uso para trabajar con las personas
+	@Autowired
+	private PersonaService personaService;
 
-   @GetMapping({"/personas"})
-   public String listar(Model model) {
-      model.addAttribute("personas", this.personaService.listarTodas());
-      return "persona-list";
-   }
+	public PersonaController() {
+	}
 
-   @GetMapping({"/persona/nueva"})
-   public String nuevaPersona(Model model) {
-      model.addAttribute("personaForm", new PersonaForm());
-      return "persona-form";
-   }
+	// Muestra el listado de personas
+	@GetMapping("/personas")
+	public String listar(Model model) {
 
-   @PostMapping({"/personas"})
-   public String guardar(@ModelAttribute("personaForm") @Valid PersonaForm personaForm, BindingResult result, Model model) {
-      if (result.hasErrors()) {
-         return "persona-form";
-      } else {
-         try {
-            Persona persona = personaForm.toPojo();
-            this.personaService.guardar(persona);
-            return "redirect:/personas";
-         } catch (RuntimeException e) {
-            model.addAttribute("error", e.getMessage());
-            return "persona-form";
-         }
-      }
-   }
+		// Traigo todas las personas y las envío a la vista
+		model.addAttribute("personas", personaService.listarTodas());
 
-   @GetMapping({"/persona/editar/{id}"})
-   public String editar(@PathVariable Long id, Model model) {
-      Persona persona = this.personaService.buscarPorId(id);
-      PersonaForm form = PersonaForm.fromPojo(persona);
-      model.addAttribute("personaForm", form);
-      return "persona-form";
-   }
+		return "persona-list";
+	}
 
-   @GetMapping({"/persona/eliminar/{id}"})
-   public String eliminar(@PathVariable Long id, Model model) {
-      try {
-         this.personaService.eliminar(id);
-         return "redirect:/personas";
-      } catch (RuntimeException e) {
-         model.addAttribute("error", e.getMessage());
-         model.addAttribute("personas", this.personaService.listarTodas());
-         return "persona-list";
-      }
-   }
+	// Abre el formulario para crear una persona
+	@GetMapping("/persona/nueva")
+	public String nuevaPersona(Model model) {
+
+		// Creo un formulario vacío
+		model.addAttribute("personaForm", new PersonaForm());
+
+		return "persona-form";
+	}
+
+	// Guarda una persona
+	@PostMapping("/personas")
+	public String guardar(@ModelAttribute("personaForm") @Valid PersonaForm personaForm,
+			BindingResult result, Model model) {
+
+		// Si falta completar algún dato vuelvo al formulario
+		if (result.hasErrors()) {
+			return "persona-form";
+		} else {
+
+			try {
+
+				// Paso los datos del formulario a un objeto Persona
+				Persona persona = personaForm.toPojo();
+
+				// Guardo la persona
+				personaService.guardar(persona);
+
+				// Si salió bien vuelvo al listado
+				return "redirect:/personas";
+
+			} catch (RuntimeException e) {
+
+				// Si ocurre un error lo muestro en pantalla
+				model.addAttribute("error", e.getMessage());
+
+				return "persona-form";
+			}
+		}
+	}
+
+	// Busca una persona para poder editarla
+	@GetMapping("/persona/editar/{id}")
+	public String editar(@PathVariable Long id, Model model) {
+
+		// Busco la persona por el id
+		Persona persona = personaService.buscarPorId(id);
+
+		// Paso la persona al formulario para mostrar sus datos
+		PersonaForm form = PersonaForm.fromPojo(persona);
+
+		model.addAttribute("personaForm", form);
+
+		return "persona-form";
+	}
+
+	// Elimina una persona
+	@GetMapping("/persona/eliminar/{id}")
+	public String eliminar(@PathVariable Long id, Model model) {
+
+		try {
+
+			// Intento eliminar la persona
+			personaService.eliminar(id);
+
+			return "redirect:/personas";
+
+		} catch (RuntimeException e) {
+
+			// Si no se puede eliminar, muestro el motivo
+			model.addAttribute("error", e.getMessage());
+
+			// Cargo nuevamente el listado
+			model.addAttribute("personas", personaService.listarTodas());
+
+			return "persona-list";
+		}
+	}
 }
