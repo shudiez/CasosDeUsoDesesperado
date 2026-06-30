@@ -1,4 +1,4 @@
-package com.desi.inmobiliaria.excepciones;
+package excepciones;
 
 public class Excepcion extends Exception {
 

@@ -5,7 +5,8 @@ import com.desi.inmobiliaria.entity.EstadoFactura;
 import java.time.LocalDate;
 import java.util.List;
 import com.desi.inmobiliaria.entity.Factura;
-import com.desi.inmobiliaria.excepciones.Excepcion;
+
+import excepciones.Excepcion;
 
 public interface FacturaService {
 	// 4.4 listado

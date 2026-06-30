@@ -6,9 +6,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
-
 @Entity
 public class Ciudad {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -49,5 +49,4 @@ public class Ciudad {
 		this.provincia = provincia;
 	}
 
-	
 }

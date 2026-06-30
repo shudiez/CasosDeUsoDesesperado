@@ -24,7 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/facturas")
-public class FacturasBuscarController {
+public class FacturaBuscarController {
 
 	@Autowired
 	private FacturaService facturaService;
@@ -44,7 +44,7 @@ public class FacturasBuscarController {
 		modelo.addAttribute("formBean", form);
 		modelo.addAttribute("facturas", facturaService.getAll());
 		cargarCombosFiltro(modelo);
-		return "Facturalistar";
+		return "factura-list";
 	}
 
 	@ModelAttribute("estados")
@@ -69,7 +69,7 @@ public class FacturasBuscarController {
 
 			cargarCombosFiltro(modelo);
 			modelo.addAttribute("formBean", formBean);
-			return "Facturalistar";
+			return "factura-list";
 		}
 
 		if (action.equals("Cancelar")) {

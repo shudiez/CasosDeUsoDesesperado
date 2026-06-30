@@ -6,11 +6,13 @@ import com.desi.inmobiliaria.entity.Factura;
 import com.desi.inmobiliaria.entity.Contrato;
 import com.desi.inmobiliaria.entity.EstadoContrato;
 import com.desi.inmobiliaria.entity.EstadoFactura;
-import com.desi.inmobiliaria.excepciones.Excepcion;
-import com.desi.inmobiliaria.excepciones.EntidadNoEncontradaException;
 import com.desi.inmobiliaria.repository.ContratoRepository;
 import com.desi.inmobiliaria.repository.FacturaRepository;
 import com.desi.inmobiliaria.repository.HistorialEstadoFacturaRepository;
+
+import excepciones.EntidadNoEncontradaException;
+import excepciones.Excepcion;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import com.desi.inmobiliaria.entity.HistorialEstadoFactura;
