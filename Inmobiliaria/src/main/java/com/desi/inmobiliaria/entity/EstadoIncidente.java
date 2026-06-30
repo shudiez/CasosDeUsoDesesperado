@@ -7,6 +7,4 @@ public enum EstadoIncidente {
    CANCELADO,
    REABIERTO;
 
-   private EstadoIncidente() {
-   }
 }
