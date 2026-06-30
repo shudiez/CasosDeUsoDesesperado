@@ -1,50 +1,73 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
 <meta charset="UTF-8">
+
+<!-- Título de la pestaña -->
 <title>Lista de Propiedades</title>
 
+<!-- Bootstrap para los estilos -->
 <link rel="stylesheet"
 href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+<!-- Iconos de Bootstrap -->
 <link rel="stylesheet"
 href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
 </head>
 
 <body class="bg-light">
 
+<!-- Barra superior -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+
     <div class="container">
+
         <a class="navbar-brand fw-bold" th:href="@{/}">
             <i class="bi bi-building-gear me-2"></i>
             Casos de uso desesperado
         </a>
+
         <span class="navbar-text text-white-50">
             Gestión de Propiedades
         </span>
+
     </div>
+
 </nav>
 
 <div class="container my-5">
 
+    <!-- Título de la página y botones -->
     <div class="d-flex justify-content-between align-items-center mb-4">
+
         <h2 class="fw-bold text-primary mb-0">
             <i class="bi bi-house-door-fill"></i>
             Lista de Propiedades
         </h2>
 
         <div>
+
+            <!-- Vuelve a la pantalla principal -->
             <a th:href="@{/}" class="btn btn-outline-secondary me-2">
                 <i class="bi bi-arrow-left-short"></i>
                 Volver al Inicio
             </a>
+
+            <!-- Abre el formulario para crear una propiedad -->
             <a th:href="@{/propiedad/nueva}" class="btn btn-success">
                 <i class="bi bi-plus-circle"></i>
                 Nueva Propiedad
             </a>
+
         </div>
+
     </div>
 
+    <!-- Tarjeta con los filtros de búsqueda -->
     <div class="card shadow mb-4">
+
         <div class="card-header bg-primary text-white">
             <i class="bi bi-funnel-fill"></i>
             Filtrar Propiedades
@@ -52,68 +75,105 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.c
 
         <div class="card-body">
 
+            <!-- Formulario para buscar propiedades -->
             <form th:action="@{/propiedades/buscar}" method="get">
 
                 <div class="row">
 
+                    <!-- Dirección -->
                     <div class="col-md-3 mb-3">
-                        <label class="form-label">Dirección</label>
-                        <input type="text" name="direccion" class="form-control">
+
+                        <label class="form-label">
+                            Dirección
+                        </label>
+
+                        <input type="text"
+                               name="direccion"
+                               class="form-control">
+
                     </div>
 
+                    <!-- Ciudad -->
                     <div class="col-md-3 mb-3">
-                        <label class="form-label">Ciudad</label>
 
-                        <select name="ciudadId" class="form-select">
-                            <option value="">Todas</option>
+                        <label class="form-label">
+                            Ciudad
+                        </label>
 
-                            <option
-                                th:each="ciudad : ${ciudades}"
-                                th:value="${ciudad.id}"
-                                th:text="${ciudad.nombre}">
-                            </option>
-                        </select>
-                    </div>
+                        <select name="ciudadId"
+                                class="form-select">
 
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label">Tipo</label>
-
-                        <select name="tipo" class="form-select">
-
-                            <option value="">Todos</option>
-
-                            <option
-                                th:each="tipo : ${tipos}"
-                                th:value="${tipo}"
-                                th:text="${tipo}">
+                            <option value="">
+                                Todas
                             </option>
 
-                        </select>
-                    </div>
-
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label">Estado</label>
-
-                        <select name="estado" class="form-select">
-
-                            <option value="">Todos</option>
-
-                            <option
-                                th:each="estado : ${estados}"
-                                th:value="${estado}"
-                                th:text="${estado}">
+                            <!-- Carga todas las ciudades -->
+                            <option th:each="ciudad : ${ciudades}"
+                                    th:value="${ciudad.id}"
+                                    th:text="${ciudad.nombre}">
                             </option>
 
                         </select>
+
+                    </div>
+
+                    <!-- Tipo -->
+                    <div class="col-md-3 mb-3">
+
+                        <label class="form-label">
+                            Tipo
+                        </label>
+
+                        <select name="tipo"
+                                class="form-select">
+
+                            <option value="">
+                                Todos
+                            </option>
+
+                            <!-- Carga todos los tipos -->
+                            <option th:each="tipo : ${tipos}"
+                                    th:value="${tipo}"
+                                    th:text="${tipo}">
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <!-- Estado -->
+                    <div class="col-md-3 mb-3">
+
+                        <label class="form-label">
+                            Estado
+                        </label>
+
+                        <select name="estado"
+                                class="form-select">
+
+                            <option value="">
+                                Todos
+                            </option>
+
+                            <!-- Carga todos los estados -->
+                            <option th:each="estado : ${estados}"
+                                    th:value="${estado}"
+                                    th:text="${estado}">
+                            </option>
+
+                        </select>
+
                     </div>
 
                 </div>
 
+                <!-- Botón para realizar la búsqueda -->
                 <button class="btn btn-primary" type="submit">
                     <i class="bi bi-search"></i>
                     Buscar
                 </button>
 
+                <!-- Limpia los filtros -->
                 <a th:href="@{/propiedades}" class="btn btn-secondary">
                     <i class="bi bi-arrow-clockwise"></i>
                     Limpiar filtros
@@ -125,8 +185,13 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.c
 
     </div>
 
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    <!-- Muestra un mensaje si ocurre un error -->
+    <div th:if="${error}"
+         class="alert alert-danger"
+         th:text="${error}">
+    </div>
 
+    <!-- Tarjeta que contiene la tabla -->
     <div class="card shadow">
 
         <div class="card-header bg-success text-white">
@@ -137,6 +202,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.c
 
             <div class="table-responsive">
 
+                <!-- Tabla con todas las propiedades -->
                 <table class="table table-striped table-hover align-middle">
 
                     <thead class="table-dark">
@@ -159,14 +225,17 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.c
 
                     <tbody>
 
+                    <!-- Recorre la lista de propiedades -->
                     <tr th:each="propiedad : ${propiedades}">
 
                         <td th:text="${propiedad.id}"></td>
 
                         <td th:text="${propiedad.direccion}"></td>
 
+                        <!-- Muestra la ciudad -->
                         <td th:text="${propiedad.ciudad != null ? propiedad.ciudad.nombre : 'Sin ciudad'}"></td>
 
+                        <!-- Muestra la provincia -->
                         <td th:text="${propiedad.ciudad != null && propiedad.ciudad.provincia != null ? propiedad.ciudad.provincia.nombre : 'Sin provincia'}"></td>
 
                         <td th:text="${propiedad.tipo}"></td>
@@ -175,29 +244,40 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.c
 
                         <td th:text="${propiedad.metrosCuadrados}"></td>
 
+                        <!-- Muestra el estado -->
                         <td>
+
                             <span class="badge bg-info"
                                   th:text="${propiedad.estadoDisponibilidad}">
                             </span>
+
                         </td>
 
+                        <!-- Muestra el propietario -->
                         <td th:text="${propiedad.propietario != null ? propiedad.propietario.nombre + ' ' + propiedad.propietario.apellido : 'Sin propietario'}"></td>
 
                         <td th:text="${propiedad.descripcion}"></td>
 
+                        <!-- Botones -->
                         <td>
 
+                            <!-- Edita la propiedad -->
                             <a class="btn btn-warning btn-sm"
                                th:href="@{/propiedad/editar/{id}(id=${propiedad.id})}">
+
                                 <i class="bi bi-pencil-square"></i>
                                 Editar
+
                             </a>
 
+                            <!-- Elimina la propiedad -->
                             <a class="btn btn-danger btn-sm"
                                th:href="@{/propiedad/eliminar/{id}(id=${propiedad.id})}"
                                onclick="return confirm('¿Está seguro de eliminar la propiedad?')">
+
                                 <i class="bi bi-trash"></i>
                                 Eliminar
+
                             </a>
 
                         </td>
@@ -216,6 +296,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.c
 
 </div>
 
+<!-- Pie de página -->
 <footer class="mt-5 py-3 bg-white border-top text-center text-muted">
     © 2026 Casos de uso desesperado - Desarrollo de Software
 </footer>
