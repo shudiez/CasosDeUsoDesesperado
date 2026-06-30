@@ -7,6 +7,4 @@ public enum EstadoPublicacion {
    FINALIZADA,
    ELIMINADA;
 
-   private EstadoPublicacion() {
-   }
 }
