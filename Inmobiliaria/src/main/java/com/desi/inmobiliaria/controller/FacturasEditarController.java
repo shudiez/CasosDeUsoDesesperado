@@ -19,6 +19,7 @@ import jakarta.validation.Valid;
 @Controller
 @RequestMapping("/facturas")
 public class FacturasEditarController {
+
 	@Autowired
 	private FacturaService facturaService;
 	@Autowired
@@ -67,9 +68,18 @@ public class FacturasEditarController {
 		}
 	}
 
+	@GetMapping("/eliminar/{id}")
+	public String eliminar(@PathVariable("id") Long id, Model model) {
+		try {
+			facturaService.deleteById(id);
+		} catch (Exception e) {
+			model.addAttribute("error", e.getMessage());
+		}
+		return "redirect:/facturas";
+	}
+
 	private void cargarAtributosFormulario(Model model) {
 		model.addAttribute("contratos", contratoService.listarConFiltros(null, null, EstadoContrato.ACTIVO, null));
 		model.addAttribute("estados", EstadoFactura.values());
 		model.addAttribute("mediosPago", MedioPago.values());
 	}
-}
